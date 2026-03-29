@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>melzayathub - Dashboards & Projects</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .nav-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+        .nav-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .nav-card p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>melzayathub</h1>
+        <p class="subtitle">Centralized Dashboard, Projects & Initiatives</p>
+        
+        <div class="nav-grid">
+            <a href="/projects" class="nav-card">
+                <span class="emoji">📊</span>
+                <h3>Projects</h3>
+                <p>View all dashboards and initiatives</p>
+            </a>
+            <a href="/projects/agent-cost-dashboard" class="nav-card">
+                <span class="emoji">💰</span>
+                <h3>Agent Cost Dashboard</h3>
+                <p>Track daily & monthly agent costs</p>
+            </a>
+            <a href="/projects/ana-gahiz" class="nav-card">
+                <span class="emoji">🌍</span>
+                <h3>أنا جاهز</h3>
+                <p>I Am Ready Initiative</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
