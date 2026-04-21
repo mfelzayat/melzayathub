@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropbox Integration - melzayathub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0061FF 0%, #0040AA 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .dropbox-logo {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+        header h1 { color: #0061FF; font-size: 1.8em; }
+        header p { color: #666; font-size: 0.95em; margin-top: 4px; }
+        header a { color: #0061FF; text-decoration: none; font-size: 0.9em; }
+        header a:hover { text-decoration: underline; }
+        .back-link { margin-left: auto; white-space: nowrap; }
+
+        /* Connect screen */
+        #connect-screen {
+            background: white;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        #connect-screen h2 { color: #333; font-size: 1.6em; margin-bottom: 12px; }
+        #connect-screen p { color: #666; font-size: 1em; margin-bottom: 30px; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+        .app-key-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 420px;
+            margin: 0 auto 24px;
+        }
+        .app-key-form label { text-align: left; font-size: 0.9em; color: #555; font-weight: 600; }
+        .app-key-form input {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .app-key-form input:focus { border-color: #0061FF; }
+
+        .btn-connect {
+            background: #0061FF;
+            color: white;
+            border: none;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            width: 100%;
+        }
+        .btn-connect:hover { background: #0040AA; transform: translateY(-1px); }
+        .btn-connect:active { transform: translateY(0); }
+
+        .hint {
+            font-size: 0.82em;
+            color: #999;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+        .hint a { color: #0061FF; }
+
+        /* Browser screen */
+        #browser-screen { display: none; }
+
+        .toolbar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .breadcrumb span { color: #ccc; }
+        .breadcrumb-item {
+            color: #0061FF;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+        .breadcrumb-item:hover { text-decoration: underline; }
+        .breadcrumb-item.current { color: #333; cursor: default; }
+        .breadcrumb-item.current:hover { text-decoration: none; }
+
+        .btn-disconnect {
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .btn-disconnect:hover { background: #ffe0e0; color: #c00; }
+
+        .btn-refresh {
+            background: #f0f5ff;
+            color: #0061FF;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .btn-refresh:hover { background: #ddeeff; }
+
+        /* File list */
+        .file-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 24px;
+            padding: 16px 24px;
+            background: #f8f9ff;
+            border-bottom: 1px solid #eef;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .stats-bar strong { color: #333; }
+
+        #loading {
+            padding: 60px;
+            text-align: center;
+            color: #0061FF;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ddeeff;
+            border-top-color: #0061FF;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #error-msg {
+            padding: 20px 24px;
+            background: #fff5f5;
+            color: #c00;
+            border-radius: 8px;
+            margin: 20px;
+            display: none;
+            font-size: 0.9em;
+        }
+
+        #file-list { list-style: none; }
+        #file-list li {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 14px;
+            transition: background 0.15s;
+            cursor: default;
+        }
+        #file-list li:last-child { border-bottom: none; }
+        #file-list li.folder { cursor: pointer; }
+        #file-list li:hover { background: #f8f9ff; }
+        #file-list li.folder:hover { background: #eef3ff; }
+
+        .file-icon { font-size: 1.5em; flex-shrink: 0; width: 32px; text-align: center; }
+        .file-info { flex: 1; min-width: 0; }
+        .file-name { font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-meta { font-size: 0.78em; color: #999; margin-top: 2px; }
+        .file-size { font-size: 0.82em; color: #aaa; white-space: nowrap; }
+
+        #empty-msg {
+            padding: 60px;
+            text-align: center;
+            color: #aaa;
+            display: none;
+            font-size: 0.95em;
+        }
+
+        /* Account info */
+        .account-badge {
+            background: #eef3ff;
+            color: #0040AA;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.82em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <svg class="dropbox-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 5L20 11.5L10 18L0 11.5L10 5Z" fill="#0061FF"/>
+                <path d="M30 5L40 11.5L30 18L20 11.5L30 5Z" fill="#0061FF"/>
+                <path d="M0 24.5L10 18L20 24.5L10 31L0 24.5Z" fill="#0061FF"/>
+                <path d="M20 24.5L30 18L40 24.5L30 31L20 24.5Z" fill="#0061FF"/>
+                <path d="M10 32.5L20 26L30 32.5L20 39L10 32.5Z" fill="#0061FF"/>
+            </svg>
+            <div style="flex:1">
+                <h1>Dropbox</h1>
+                <p>Browse and manage your Dropbox files</p>
+            </div>
+            <a href="/projects" class="back-link">← Back to Projects</a>
+        </header>
+
+        <!-- Connect Screen -->
+        <div id="connect-screen">
+            <h2>Connect to Dropbox</h2>
+            <p>Enter your Dropbox App Key to authorize access to your files. Your token is stored only in your browser.</p>
+
+            <div class="app-key-form">
+                <label for="app-key-input">Dropbox App Key</label>
+                <input type="text" id="app-key-input" placeholder="e.g. abc123xyz456" autocomplete="off" />
+            </div>
+            <button class="btn-connect" onclick="startOAuth()">Connect to Dropbox</button>
+            <p class="hint">
+                Don't have an App Key? <a href="https://www.dropbox.com/developers/apps" target="_blank" rel="noopener">Create a Dropbox app</a> at the Dropbox Developer Console.<br>
+                Set the OAuth 2 redirect URI to this page's URL.
+            </p>
+        </div>
+
+        <!-- Browser Screen -->
+        <div id="browser-screen">
+            <div class="toolbar">
+                <div class="breadcrumb" id="breadcrumb"></div>
+                <span id="account-badge" class="account-badge"></span>
+                <button class="btn-refresh" onclick="loadFolder(currentPath)">Refresh</button>
+                <button class="btn-disconnect" onclick="disconnect()">Disconnect</button>
+            </div>
+
+            <div class="file-panel">
+                <div class="stats-bar" id="stats-bar" style="display:none">
+                    <span>Folders: <strong id="stat-folders">0</strong></span>
+                    <span>Files: <strong id="stat-files">0</strong></span>
+                    <span>Total size: <strong id="stat-size">—</strong></span>
+                </div>
+                <div id="loading">
+                    <div class="spinner"></div>
+                    Loading your files…
+                </div>
+                <div id="error-msg"></div>
+                <ul id="file-list"></ul>
+                <div id="empty-msg">This folder is empty.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'dropbox_access_token';
+        const APP_KEY_STORAGE = 'dropbox_app_key';
+        let currentPath = '';
+        let breadcrumbStack = [{ name: 'Dropbox', path: '' }];
+
+        function getToken() { return localStorage.getItem(STORAGE_KEY); }
+        function getAppKey() { return localStorage.getItem(APP_KEY_STORAGE); }
+
+        function init() {
+            // Handle OAuth redirect (token in URL hash)
+            const hash = window.location.hash;
+            if (hash.includes('access_token=')) {
+                const params = new URLSearchParams(hash.slice(1));
+                const token = params.get('access_token');
+                if (token) {
+                    localStorage.setItem(STORAGE_KEY, token);
+                    history.replaceState(null, '', window.location.pathname);
+                    showBrowser();
+                    return;
+                }
+            }
+            if (getToken()) {
+                showBrowser();
+            } else {
+                const savedKey = getAppKey();
+                if (savedKey) document.getElementById('app-key-input').value = savedKey;
+                showConnect();
+            }
+        }
+
+        function showConnect() {
+            document.getElementById('connect-screen').style.display = 'block';
+            document.getElementById('browser-screen').style.display = 'none';
+        }
+
+        function showBrowser() {
+            document.getElementById('connect-screen').style.display = 'none';
+            document.getElementById('browser-screen').style.display = 'block';
+            loadAccountInfo();
+            loadFolder('');
+        }
+
+        function startOAuth() {
+            const appKey = document.getElementById('app-key-input').value.trim();
+            if (!appKey) { alert('Please enter your Dropbox App Key.'); return; }
+            localStorage.setItem(APP_KEY_STORAGE, appKey);
+            const redirectUri = encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${encodeURIComponent(appKey)}&response_type=token&redirect_uri=${redirectUri}`;
+            window.location.href = authUrl;
+        }
+
+        function disconnect() {
+            localStorage.removeItem(STORAGE_KEY);
+            currentPath = '';
+            breadcrumbStack = [{ name: 'Dropbox', path: '' }];
+            showConnect();
+        }
+
+        async function dbxFetch(endpoint, body) {
+            const resp = await fetch(`https://api.dropboxapi.com/2/${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+            if (resp.status === 401) { disconnect(); throw new Error('Session expired. Please reconnect.'); }
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.error_summary || `API error ${resp.status}`);
+            }
+            return resp.json();
+        }
+
+        async function loadAccountInfo() {
+            try {
+                const resp = await fetch('https://api.dropboxapi.com/2/users/get_current_account', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const name = data.name?.display_name || data.email || 'Connected';
+                document.getElementById('account-badge').textContent = name;
+            } catch {}
+        }
+
+        async function loadFolder(path) {
+            currentPath = path;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('file-list').innerHTML = '';
+            document.getElementById('error-msg').style.display = 'none';
+            document.getElementById('empty-msg').style.display = 'none';
+            document.getElementById('stats-bar').style.display = 'none';
+            renderBreadcrumb();
+
+            try {
+                let entries = [];
+                let result = await dbxFetch('files/list_folder', { path, recursive: false });
+                entries = entries.concat(result.entries);
+                while (result.has_more) {
+                    result = await dbxFetch('files/list_folder/continue', { cursor: result.cursor });
+                    entries = entries.concat(result.entries);
+                }
+                renderFiles(entries);
+            } catch (e) {
+                showError(e.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function renderFiles(entries) {
+            const list = document.getElementById('file-list');
+            list.innerHTML = '';
+
+            const folders = entries.filter(e => e['.tag'] === 'folder').sort((a,b) => a.name.localeCompare(b.name));
+            const files = entries.filter(e => e['.tag'] === 'file').sort((a,b) => a.name.localeCompare(b.name));
+            const sorted = [...folders, ...files];
+
+            if (sorted.length === 0) {
+                document.getElementById('empty-msg').style.display = 'block';
+                return;
+            }
+
+            let totalSize = 0;
+            sorted.forEach(entry => {
+                const li = document.createElement('li');
+                const isFolder = entry['.tag'] === 'folder';
+                if (isFolder) li.classList.add('folder');
+
+                const icon = isFolder ? '📁' : getFileIcon(entry.name);
+                const meta = isFolder ? 'Folder' : formatDate(entry.client_modified || entry.server_modified);
+                const size = isFolder ? '' : formatSize(entry.size || 0);
+                if (entry.size) totalSize += entry.size;
+
+                li.innerHTML = `
+                    <span class="file-icon">${icon}</span>
+                    <div class="file-info">
+                        <div class="file-name">${escHtml(entry.name)}</div>
+                        <div class="file-meta">${escHtml(meta)}</div>
+                    </div>
+                    ${size ? `<span class="file-size">${escHtml(size)}</span>` : ''}
+                `;
+
+                if (isFolder) {
+                    li.addEventListener('click', () => navigateTo(entry.path_lower, entry.name));
+                }
+                list.appendChild(li);
+            });
+
+            document.getElementById('stat-folders').textContent = folders.length;
+            document.getElementById('stat-files').textContent = files.length;
+            document.getElementById('stat-size').textContent = totalSize > 0 ? formatSize(totalSize) : '—';
+            document.getElementById('stats-bar').style.display = 'flex';
+        }
+
+        function navigateTo(path, name) {
+            const existing = breadcrumbStack.findIndex(b => b.path === path);
+            if (existing !== -1) {
+                breadcrumbStack = breadcrumbStack.slice(0, existing + 1);
+            } else {
+                breadcrumbStack.push({ name, path });
+            }
+            loadFolder(path);
+        }
+
+        function renderBreadcrumb() {
+            const bc = document.getElementById('breadcrumb');
+            bc.innerHTML = '';
+            breadcrumbStack.forEach((item, i) => {
+                if (i > 0) {
+                    const sep = document.createElement('span');
+                    sep.textContent = '/';
+                    bc.appendChild(sep);
+                }
+                const el = document.createElement('span');
+                el.className = 'breadcrumb-item' + (i === breadcrumbStack.length - 1 ? ' current' : '');
+                el.textContent = item.name;
+                if (i < breadcrumbStack.length - 1) {
+                    el.addEventListener('click', () => navigateTo(item.path, item.name));
+                }
+                bc.appendChild(el);
+            });
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('error-msg');
+            el.textContent = 'Error: ' + msg;
+            el.style.display = 'block';
+        }
+
+        function getFileIcon(name) {
+            const ext = name.split('.').pop().toLowerCase();
+            const icons = {
+                pdf: '📄', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊',
+                ppt: '📋', pptx: '📋', txt: '📃', md: '📃',
+                jpg: '🖼️', jpeg: '🖼️', png: '🖼️', gif: '🖼️', svg: '🖼️', webp: '🖼️',
+                mp4: '🎬', mov: '🎬', avi: '🎬', mkv: '🎬',
+                mp3: '🎵', wav: '🎵', aac: '🎵', flac: '🎵',
+                zip: '🗜️', rar: '🗜️', gz: '🗜️', tar: '🗜️',
+                js: '⚙️', ts: '⚙️', py: '⚙️', html: '⚙️', css: '⚙️',
+                json: '⚙️', xml: '⚙️', csv: '📊'
+            };
+            return icons[ext] || '📄';
+        }
+
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return (bytes / Math.pow(1024, i)).toFixed(i > 0 ? 1 : 0) + ' ' + units[i];
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function escHtml(str) {
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        init();
+    </script>
+</body>
+</html>
