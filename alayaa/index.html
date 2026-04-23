@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ALALYAA DEVELOPMENTS · Corporate Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo+Play:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #141028;
+    --ink-2:     #1e1838;
+    --graphite:  #4C4866;
+    --foil:      #B8823A;
+    --foil-lt:   #D4A85C;
+    --clay:      #B24A2C;
+    --nile:      #3E6B5E;
+    --paper:     #F3ECDC;
+    --paper-2:   #E7DCC3;
+    --mist:      #D9D3C4;
+    --rule:      rgba(20,16,40,0.15);
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Cairo Play", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Grain overlay ───────────────────────── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      radial-gradient(rgba(232,198,120,0.02) 1.5px, transparent 1.5px);
+    background-size: 3px 3px, 7px 7px;
+    mix-blend-mode: screen;
+  }
+
+  /* ── Header ──────────────────────────────── */
+  header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 72px 36px;
+    border-bottom: 1px solid rgba(232,198,120,0.18);
+  }
+  .hdr-logo-en {
+    height: 24px;
+    width: auto;
+    filter: invert(1);
+    opacity: 0.85;
+  }
+  .hdr-logo-ar {
+    height: 48px;
+    width: auto;
+    filter: invert(1);
+    opacity: 0.88;
+  }
+  .hdr-meta {
+    font-size: 10px;
+    letter-spacing: 0.38em;
+    text-indent: 0.38em;
+    text-transform: uppercase;
+    color: var(--foil);
+    opacity: 0.75;
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 96px 72px 72px;
+    overflow: hidden;
+  }
+
+  /* Ghost watermark behind hero */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; height: 280px;
+    background: url("assets/logo-ar.png") center / contain no-repeat;
+    filter: invert(1);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    text-transform: uppercase;
+    color: var(--foil);
+    opacity: 0.8;
+    margin-bottom: 28px;
+  }
+  .hero-title {
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    margin-bottom: 20px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--foil);
+    font-weight: 400;
+  }
+  .hero-ar {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 500;
+    direction: rtl;
+    color: var(--paper);
+    opacity: 0.75;
+    margin-bottom: 32px;
+    font-family: "Cairo Play", sans-serif;
+  }
+  .hero-rule {
+    width: 200px;
+    height: 1px;
+    background: var(--foil);
+    opacity: 0.45;
+    margin: 0 auto 32px;
+  }
+  .hero-body {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--paper);
+    opacity: 0.55;
+    max-width: 560px;
+    margin: 0 auto;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Options grid ────────────────────────── */
+  .options {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 24px 72px 80px;
+    background: rgba(232,198,120,0.1);
+    border: 1px solid rgba(232,198,120,0.14);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 800px) {
+    .options { grid-template-columns: 1fr; margin: 24px 24px 60px; }
+    header { padding: 28px 24px; }
+    .hero { padding: 64px 24px 48px; }
+  }
+
+  .option-card {
+    position: relative;
+    background: var(--ink-2);
+    padding: 64px 56px;
+    text-decoration: none;
+    color: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+    transition: background 0.4s ease;
+    cursor: pointer;
+  }
+  .option-card:hover { background: #23204a; }
+  .option-card:hover .card-arrow { transform: translateX(6px); opacity: 1; }
+  .option-card:hover .card-bg-mark { opacity: 0.07; }
+
+  /* Background ghost mark */
+  .card-bg-mark {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    width: 260px; height: 180px;
+    background: url("assets/logo-ar.png") right bottom / contain no-repeat;
+    filter: invert(1);
+    opacity: 0.04;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .option-card[data-opt="b"] .card-bg-mark {
+    background: url("assets/logo-en.png") right bottom / contain no-repeat;
+  }
+
+  /* Top bar line */
+  .option-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .option-card[data-opt="a"]::before { background: var(--foil); }
+  .option-card[data-opt="b"]::before { background: #3E7B6A; opacity: 0.8; }
+
+  .card-index {
+    font-size: 10px;
+    letter-spacing: 0.38em;
+    text-indent: 0.38em;
+    text-transform: uppercase;
+    color: var(--foil);
+    opacity: 0.7;
+    margin-bottom: 28px;
+  }
+  .option-card[data-opt="b"] .card-index { color: #6BA89A; }
+
+  .card-tag {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .card-title em { font-style: italic; color: var(--foil); }
+  .option-card[data-opt="b"] .card-title em { color: #6BA89A; }
+
+  .card-ar {
+    font-size: clamp(20px, 2.5vw, 32px);
+    font-weight: 600;
+    direction: rtl;
+    color: var(--foil);
+    opacity: 0.7;
+    margin-bottom: 36px;
+    font-family: "Cairo Play", sans-serif;
+  }
+  .option-card[data-opt="b"] .card-ar { color: #6BA89A; }
+
+  .card-rule {
+    height: 1px;
+    background: currentColor;
+    opacity: 0.1;
+    margin-bottom: 28px;
+  }
+
+  .card-description {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    opacity: 0.55;
+    max-width: 440px;
+    margin-bottom: 40px;
+    flex: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .card-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 12px;
+    border: 1px solid;
+    border-color: rgba(184,130,58,0.35);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    color: var(--foil);
+    border-radius: 2px;
+  }
+  .option-card[data-opt="b"] .card-pill {
+    border-color: rgba(62,107,94,0.4);
+    color: #6BA89A;
+  }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+    text-transform: uppercase;
+    color: var(--foil);
+    opacity: 0.75;
+  }
+  .option-card[data-opt="b"] .card-cta { color: #6BA89A; opacity: 0.55; }
+
+  .card-cta-line {
+    height: 1px;
+    width: 36px;
+    background: var(--foil);
+    opacity: 0.6;
+    transition: width 0.3s ease;
+  }
+  .option-card:hover .card-cta-line { width: 56px; }
+  .option-card[data-opt="b"] .card-cta-line { background: #6BA89A; }
+
+  .card-arrow {
+    font-size: 16px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.6;
+  }
+
+  /* Badge for Option A */
+  .card-badge {
+    position: absolute;
+    top: 28px; right: 28px;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    background: rgba(184,130,58,0.12);
+    border: 1px solid rgba(184,130,58,0.3);
+    color: var(--foil);
+    border-radius: 2px;
+  }
+
+  /* ── Footer ──────────────────────────────── */
+  footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(232,198,120,0.14);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 72px;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+  @media (max-width: 800px) { footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; } }
+
+  /* ── Animations ──────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both 0.1s; }
+  .hero-title   { animation: fadeUp 0.8s ease both 0.22s; }
+  .hero-ar      { animation: fadeUp 0.8s ease both 0.34s; }
+  .hero-rule    { animation: fadeUp 0.6s ease both 0.44s; }
+  .hero-body    { animation: fadeUp 0.8s ease both 0.52s; }
+  .options      { animation: fadeUp 0.9s ease both 0.64s; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <img class="hdr-logo-en" src="assets/logo-en.png" alt="ALALYAA DEVELOPMENTS"/>
+  <div class="hdr-meta">Corporate Identity &nbsp;·&nbsp; 2026</div>
+  <img class="hdr-logo-ar" src="assets/logo-ar.png" alt="العلياء"/>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">Brand Identity &nbsp;·&nbsp; Concept Presentation</div>
+  <h1 class="hero-title">Select Your <em>Identity</em></h1>
+  <div class="hero-ar">اختر هويّتك</div>
+  <div class="hero-rule"></div>
+  <p class="hero-body">
+    Two distinct corporate identity directions for ALALYAA DEVELOPMENTS.
+    Click either option to explore the full brand guidelines in a new tab.
+  </p>
+</section>
+
+<!-- Option Cards -->
+<div class="options">
+
+  <!-- Option A -->
+  <a class="option-card" data-opt="a" href="option-a.html" target="_blank" rel="noopener">
+    <div class="card-bg-mark"></div>
+    <div class="card-badge">Ready</div>
+
+    <div class="card-index">Option A &nbsp;·&nbsp; 01</div>
+    <div class="card-tag">Heritage · Print Craft</div>
+    <h2 class="card-title">The <em>Guideline</em> Edition</h2>
+    <div class="card-ar">النسخة الرسميّة</div>
+
+    <div class="card-rule"></div>
+
+    <p class="card-description">
+      A stately, print-craft identity inspired by the world's great
+      luxury brand books. Midnight ink, papyrus cream, antique brass foil.
+      Cairo Play bilingual typography. Cinematic slide transitions.
+      17 pages of comprehensive brand guidelines.
+    </p>
+
+    <div class="card-tags">
+      <span class="card-pill">◆ Heritage Palette</span>
+      <span class="card-pill">◆ Brass Foil</span>
+      <span class="card-pill">◆ Bilingual</span>
+      <span class="card-pill">◆ 17 Slides</span>
+    </div>
+
+    <div class="card-cta">
+      <div class="card-cta-line"></div>
+      <span>Open Brand Guidelines</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <!-- Option B -->
+  <a class="option-card" data-opt="b" href="option-b.html" target="_blank" rel="noopener">
+    <div class="card-bg-mark"></div>
+    <div class="card-badge" style="border-color:rgba(62,107,94,0.4);background:rgba(62,107,94,0.1);color:#6BA89A;">Ready</div>
+
+    <div class="card-index">Option B &nbsp;·&nbsp; 02</div>
+    <div class="card-tag">Dunes at Dawn · EMAAR Edition</div>
+    <h2 class="card-title">The Brand <em>Book</em></h2>
+    <div class="card-ar">كتاب الهوية</div>
+
+    <div class="card-rule"></div>
+
+    <p class="card-description">
+      A warm, editorial brand book in the tradition of EMAAR and the great Gulf
+      developers. Dunes at Dawn palette — linen, anchor charcoal, flat clay.
+      Alexandria typeface, bilingual Arabic-Latin. 25 slides covering every
+      aspect of the identity with considered, cinematic motion.
+    </p>
+
+    <div class="card-tags">
+      <span class="card-pill">◆ Dunes at Dawn</span>
+      <span class="card-pill">◆ Alexandria Type</span>
+      <span class="card-pill">◆ Bilingual</span>
+      <span class="card-pill">◆ 25 Slides</span>
+    </div>
+
+    <div class="card-cta">
+      <div class="card-cta-line"></div>
+      <span>Open Brand Book</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <span>ALALYAA DEVELOPMENTS</span>
+  <span>Corporate Identity &nbsp;·&nbsp; MMXXVI</span>
+  <span>Powered by Strike Media</span>
+</footer>
+
+</body>
+</html>
