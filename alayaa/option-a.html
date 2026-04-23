@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ALALYAA · Brand Guidelines Vol III · Option A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Cairo+Play:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/guideline.css"/>
+<link rel="stylesheet" href="styles/guideline-motion.css"/>
+<link rel="stylesheet" href="styles/guideline-transition.css"/>
+<script src="deck-stage.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="components/GuidelinePrim.jsx"></script>
+<script type="text/babel" src="components/Guideline1.jsx"></script>
+<script type="text/babel" src="components/GuidelineConcept.jsx"></script>
+<script type="text/babel" src="components/GuidelineEN.jsx"></script>
+<script type="text/babel" src="components/Guideline2.jsx"></script>
+<script type="text/babel">
+const App = () => (
+  <deck-stage width="1920" height="1080">
+    <GCover/>
+    <GContents/>
+    <GIntro/>
+    <GMission/>
+    <GValues/>
+    <GWordmark/>
+    <GConceptAR/>
+    <GClearZone/>
+    <GWordmarkEN/>
+    <GClearZoneEN/>
+    <GDualLockup/>
+    <GLogoSystem/>
+    <GColour/>
+    <GType/>
+    <GStationery/>
+    <GSignage/>
+    <GColophon/>
+  </deck-stage>
+);
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script>
+/* THE ASCENT — Cinematic Curtain orchestrator. */
+(() => {
+  const CHAPTERS = [
+    { num: "٠",  en: "Cover",            ar: "الغــلاف" },
+    { num: "٠",  en: "Contents",         ar: "الفهــرس" },
+    { num: "١",  en: "Introduction",     ar: "تقديــم" },
+    { num: "١",  en: "Mission · Vision", ar: "رؤيــة · رســالة" },
+    { num: "١",  en: "Brand Values",     ar: "القيــم" },
+    { num: "٢",  en: "The Wordmark",     ar: "الشعــار" },
+    { num: "٢",  en: "The Concept",      ar: "المفهــوم" },
+    { num: "٢",  en: "Clear Zone",       ar: "المســاحة" },
+    { num: "٢",  en: "English Wordmark", ar: "اللاتينــي" },
+    { num: "٢",  en: "Latin Clear Zone", ar: "المســاحة" },
+    { num: "٢",  en: "Dual Lockup",      ar: "التلازم" },
+    { num: "٢",  en: "Logo System",      ar: "النظــام" },
+    { num: "٣",  en: "Colour Palette",   ar: "الألــوان" },
+    { num: "٣",  en: "Typography",       ar: "الطباعــة" },
+    { num: "٤",  en: "Stationery",       ar: "القرطاســية" },
+    { num: "٤",  en: "Signage",          ar: "اللوحــات" },
+    { num: "٥",  en: "Colophon",         ar: "الختــام" },
+  ];
+
+  const curtain = document.createElement('div');
+  curtain.className = 'ascent-curtain';
+  curtain.innerHTML = `
+    <div class="wing l"></div>
+    <div class="wing r"></div>
+    <div class="halo"></div>
+    <div class="slit"></div>
+    <div class="numeral"></div>
+    <div class="chapter">
+      <div class="en"></div>
+      <div class="ar"></div>
+    </div>
+    <div class="shimmer"></div>
+  `;
+  document.body.appendChild(curtain);
+  const numEl = curtain.querySelector('.numeral');
+  const enEl  = curtain.querySelector('.chapter .en');
+  const arEl  = curtain.querySelector('.chapter .ar');
+
+  let playing = false;
+  function playCurtain(toIndex, fromSlide, toSlide) {
+    if (playing) return;
+    playing = true;
+    const meta = CHAPTERS[toIndex] || { num: String(toIndex + 1), en: "", ar: "" };
+    numEl.textContent = meta.num;
+    enEl.textContent  = meta.en;
+    arEl.textContent  = meta.ar;
+
+    if (fromSlide) {
+      fromSlide.classList.remove('deck-leaving');
+      void fromSlide.offsetWidth;
+      fromSlide.classList.add('deck-leaving');
+      setTimeout(() => fromSlide.classList.remove('deck-leaving'), 560);
+    }
+
+    curtain.removeAttribute('data-playing');
+    void curtain.offsetWidth;
+    curtain.setAttribute('data-playing', '');
+
+    if (toSlide) {
+      setTimeout(() => {
+        toSlide.classList.remove('deck-arriving');
+        void toSlide.offsetWidth;
+        toSlide.classList.add('deck-arriving');
+        setTimeout(() => toSlide.classList.remove('deck-arriving'), 900);
+      }, 960);
+    }
+
+    setTimeout(() => {
+      curtain.removeAttribute('data-playing');
+      playing = false;
+    }, 1450);
+  }
+
+  function attach() {
+    const stage = document.querySelector('deck-stage');
+    if (!stage) return setTimeout(attach, 60);
+    stage.addEventListener('slidechange', (e) => {
+      const { index, previousIndex, reason, slide, previousSlide } = e.detail;
+      if (reason === 'init' || previousIndex === -1) return;
+      playCurtain(index, previousSlide, slide);
+    });
+  }
+  setTimeout(attach, 0);
+})();
+</script>
+<script>
+/* THE ASCENT — motion orchestrator. */
+(() => {
+  const AUTO_RULES = [
+    ['.folio',                       'anim-up'],
+    ['.section-tag',                 'anim-up'],
+    ['.section-number',              'anim-up'],
+    ['.title-display',               'anim-clip'],
+    ['.title-sans',                  'anim-up'],
+    ['.ar-title',                    'anim-rtl'],
+    ['.ar-body',                     'anim-rtl'],
+    ['.body-copy',                   'anim-up'],
+    ['.rule',                        'anim-rule'],
+    ['.rule--thick',                 'anim-rule'],
+    ['.rule--foil',                  'anim-rule'],
+    ['.crosshair',                   'anim-crosshair'],
+    ['.bottom-rail',                 'anim-up'],
+    ['.foil-chip',                   'anim-up'],
+  ];
+  function autowire(slide) {
+    AUTO_RULES.forEach(([sel, cls]) => {
+      slide.querySelectorAll(sel).forEach(el => el.classList.add(cls));
+    });
+    slide.querySelectorAll('.body-copy').forEach((el, i) => {
+      el.style.animationDelay = (320 + i * 90) + 'ms';
+    });
+    slide.querySelectorAll('.title-display').forEach((el) => {
+      el.style.animationDelay = '140ms';
+    });
+    slide.querySelectorAll('.ar-title').forEach((el, i) => {
+      el.style.animationDelay = (240 + i * 60) + 'ms';
+    });
+  }
+
+  function replay(slide, delay) {
+    if (!slide) return;
+    autowire(slide);
+    slide.classList.remove('is-entering');
+    void slide.offsetWidth;
+    setTimeout(() => {
+      slide.classList.add('is-entering');
+      clearTimeout(slide.__ascentT);
+      slide.__ascentT = setTimeout(() => slide.classList.remove('is-entering'), 2800);
+    }, delay);
+  }
+
+  function attach() {
+    const stage = document.querySelector('deck-stage');
+    if (!stage) { return setTimeout(attach, 60); }
+    const initial = stage.querySelector('[data-deck-active]');
+    if (initial) replay(initial, 0);
+    stage.addEventListener('slidechange', (e) => {
+      const { reason } = e.detail;
+      const delay = (reason === 'init') ? 0 : 1060;
+      replay(e.detail.slide, delay);
+    });
+  }
+  setTimeout(attach, 0);
+})();
+</script>
+</body>
+</html>
