@@ -1,3 +1,2 @@
 [build]
-  base    = "alayaa"
-  publish = "alayaa"
+  publish = "."
