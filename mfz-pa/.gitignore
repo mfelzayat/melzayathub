@@ -1,0 +1,10 @@
+node_modules/
+npm-debug.log*
+
+# secrets & runtime state
+*.env
+!.env.example
+state/
+memory/
+*.token
+*.credentials.json

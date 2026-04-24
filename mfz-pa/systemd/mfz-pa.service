@@ -1,0 +1,33 @@
+[Unit]
+Description=MFZ_PA — always-on Discord PA (Claude Agent SDK, subscription auth)
+Documentation=https://code.claude.com/docs/en/agent-sdk/overview
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/mfz-pa
+Environment=HOME=/root
+Environment=NODE_ENV=production
+Environment=MFZ_PA_HOME=/opt/mfz-pa
+EnvironmentFile=/etc/mfz-pa/env
+
+ExecStart=/usr/bin/node /opt/mfz-pa/src/bot.mjs
+
+Restart=always
+RestartSec=5s
+TimeoutStopSec=30s
+
+StandardOutput=journal
+StandardError=journal
+
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

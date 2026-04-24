@@ -1,0 +1,17 @@
+{
+  "name": "mfz-pa",
+  "version": "1.0.0",
+  "description": "Always-on Discord personal assistant powered by the Claude Agent SDK on a claude.ai subscription.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/bot.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.118",
+    "discord.js": "^14.17.3"
+  }
+}
