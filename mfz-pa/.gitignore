@@ -1,0 +1,8 @@
+# Secrets and runtime state — never commit these.
+*.env
+env
+secrets/
+state/
+memory/
+*.token
+*.credentials.json
