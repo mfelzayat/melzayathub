@@ -1,7 +1,9 @@
-# Secrets and runtime state — never commit these.
+node_modules/
+npm-debug.log*
+
+# secrets & runtime state
 *.env
-env
-secrets/
+!.env.example
 state/
 memory/
 *.token

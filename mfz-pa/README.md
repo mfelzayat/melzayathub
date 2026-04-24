@@ -1,180 +1,157 @@
-# MFZ_PA — always-on Discord PA on Hostinger VPS
+# MFZ_PA
 
-`MFZ_PA` is a personal assistant built on top of **Claude Code** + the
-**official Anthropic Discord plugin** ("Claude Code Channels"). It runs as a
-24/7 tmux session under systemd on a Hostinger VPS, signed in with the
-claude.ai subscription (no API key, no per-token billing).
+Always-on Discord personal assistant powered by the [Claude Agent SDK] on a
+claude.ai Pro/Max subscription — no API billing. Runs as a systemd service.
 
-## Architecture in one picture
+[Claude Agent SDK]: https://code.claude.com/docs/en/agent-sdk/overview
+
+## Architecture
 
 ```
    Your phone / laptop
    (Discord client)
             │  DM / @mention
             ▼
-      Discord servers ────────► Discord bot application (you create this)
-                                          │  bot token
-                                          ▼
-   ┌────────────────────────────────────────────────────────────────────┐
-   │  Hostinger VPS (Ubuntu 24.04, root, srv1378757)                    │
-   │                                                                    │
-   │   systemd unit: mfz-pa.service                                     │
-   │     └─► tmux session "mfz-pa"                                      │
-   │           └─► claude --channels plugin:discord@claude-plugins-…    │
-   │                  ├─ MCP server (bun) talks to Discord gateway      │
-   │                  └─ Claude Code session (CLAUDE.md = persona)      │
-   │                                                                    │
-   │   Working dir:  /root/mfz-pa/                                      │
-   │   Secrets:      /etc/mfz-pa/env  (chmod 600, DISCORD_BOT_TOKEN)    │
-   │   Auth:         /root/.claude/.credentials.json (claude.ai OAuth)  │
-   └────────────────────────────────────────────────────────────────────┘
+      Discord servers ─► Discord bot application (you create this)
+                                   │  bot token
+                                   ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │  VPS (Linux, systemd)                                       │
+   │                                                             │
+   │   mfz-pa.service                                            │
+   │     └─► node src/bot.mjs                                    │
+   │           ├─ discord.js           (gateway + DMs)           │
+   │           └─ @anthropic-ai/       (subprocess: claude CLI   │
+   │              claude-agent-sdk      authed via subscription) │
+   │                                                             │
+   │   Checkout:  /opt/mfz-pa/                                   │
+   │   Persona:   /opt/mfz-pa/CLAUDE.md                          │
+   │   Sessions:  /opt/mfz-pa/state/sessions.json  (per user)    │
+   │   Memory:    /opt/mfz-pa/memory/              (PA notes)    │
+   │   Secrets:   /etc/mfz-pa/env   (chmod 600)                  │
+   └─────────────────────────────────────────────────────────────┘
 ```
 
-## What's in this folder
+Key properties:
 
-| File                         | Purpose                                       |
-| ---------------------------- | --------------------------------------------- |
-| `CLAUDE.md`                  | The PA persona Claude Code reads on startup. |
-| `setup.sh`                   | Idempotent bootstrap. Run once on the VPS.    |
-| `start.sh`                   | Manual launcher (alternative to systemd).     |
-| `systemd/mfz-pa.service`     | Always-on systemd unit.                       |
-| `.gitignore`                 | Keeps secrets and runtime state out of git.   |
+- **Always on**: plain Node service, no interactive Claude Code session.
+- **Subscription-only billing**: authenticates via `CLAUDE_CODE_OAUTH_TOKEN`
+  from `claude setup-token`. The bot refuses to start if `ANTHROPIC_API_KEY`
+  is set.
+- **Per-user memory**: each Discord user gets a persistent Agent SDK session
+  (30-day TTL, capped at 500 users).
+- **Allowlist-gated**: `ALLOWED_DISCORD_IDS` controls who the bot responds to.
+- **Crash-resilient**: systemd auto-restarts with a 5-second backoff.
+- **Graceful shutdown**: in-flight replies get up to 15 seconds to finish on
+  restart/stop.
 
-## Prerequisites (already verified on your VPS)
+## Prerequisites
 
-- Ubuntu 24.04, root user, 26 GB free, 7.8 GiB RAM.
-- Claude Code installed and signed in via claude.ai OAuth.
-- `tmux 3.4`, `git 2.43`, `node v20.20`, `systemd 255`.
-- Marketplace `claude-plugins-official` already registered in `~/.claude/plugins`.
+- Linux VPS (tested on Ubuntu 24.04).
+- Node.js ≥ 20, npm.
+- `claude` CLI installed and logged into a claude.ai subscription.
+  - `curl -fsSL https://claude.ai/install.sh | bash` if it isn't already.
+- A Discord application + bot token (Developer Portal → your app → Bot).
+- systemd.
 
-## One-time setup on the VPS
+## One-time setup
 
-### 1. Run the bootstrap
-
-Copy this whole folder to the VPS (via `scp` or just `git clone` this repo
-and `cd melzayathub/mfz-pa`), then:
+### 1. Clone to `/opt/mfz-pa`
 
 ```bash
+sudo git clone https://github.com/mfelzayat/mfz-pa.git /opt/mfz-pa
+cd /opt/mfz-pa
 sudo bash setup.sh
 ```
 
-This installs **bun**, sets your git identity (interactive), optionally
-generates an SSH key, upgrades **Claude Code** to latest, copies `CLAUDE.md`
-to `/root/mfz-pa/`, creates `/etc/mfz-pa/env` for secrets, and installs the
-systemd unit.
+`setup.sh` installs npm deps, creates `/etc/mfz-pa/env` from `.env.example`,
+creates `state/` and `memory/`, and installs the systemd unit.
 
-### 2. Create the Discord application
+### 2. Generate a subscription OAuth token
 
-1. Go to <https://discord.com/developers/applications> → **New Application**
-   → name it (e.g. "MFZ_PA").
-2. **Bot** tab → **Reset Token** → copy the token. This is the secret.
-3. **Bot** tab → enable **Message Content Intent** (required so the bot can
-   read message text in DMs and channels).
-4. **OAuth2 → URL Generator**:
-   - Scopes: `bot` and `applications.commands`
-   - Bot Permissions: pick what you need. **Administrator** is the broadest;
-     only do that on a server you own.
-5. Open the generated URL in your browser and invite the bot to your server.
+Interactive, one-time:
 
-### 3. Save the token on the VPS
+```bash
+claude setup-token
+```
+
+It prints a token starting with `sk-ant-oat01-…`. Copy it.
+
+### 3. Fill in the secrets
 
 ```bash
 sudo nano /etc/mfz-pa/env
-# set:  DISCORD_BOT_TOKEN=<paste the token>
 ```
 
-### 4. Install the Discord plugin inside Claude Code
+All three must be set:
 
-The Channels plugin is installed via the in-session `/plugin` command, not
-via a CLI flag.
+| Variable | Value |
+| --- | --- |
+| `DISCORD_BOT_TOKEN` | From Discord Developer Portal. |
+| `CLAUDE_CODE_OAUTH_TOKEN` | Output of step 2. |
+| `ALLOWED_DISCORD_IDS` | Your Discord user ID (comma-separated for multiple). Enable Developer Mode → right-click your name → Copy User ID. |
+
+### 4. Start the service
 
 ```bash
-cd /root/mfz-pa
-claude
+sudo systemctl enable --now mfz-pa.service
+sudo journalctl -u mfz-pa.service -f
 ```
 
-Inside the Claude Code session:
+Expected log:
 
 ```
-/plugin install discord@claude-plugins-official
+MFZ_PA online as YourBotName#1234 (id=...) — model=claude-sonnet-4-6
 ```
 
-Follow its prompts — it will ask for the bot token (paste it from
-`/etc/mfz-pa/env`) and walk you through DM-based pairing with your Discord
-account. After pairing, grant your Discord user access:
+### 5. Invite the bot + DM it
 
-```
-/discord:access add <your-discord-user-id>
-```
-
-(You can find your Discord user ID by enabling Developer Mode in Discord
-settings, then right-clicking your name → "Copy User ID".)
-
-Test: send a DM to the bot. It should reply.
-
-### 5. Make it always-on
-
-Exit the interactive Claude Code session, then:
-
-```bash
-systemctl enable --now mfz-pa.service
-systemctl status mfz-pa.service --no-pager
-```
-
-The unit launches a detached tmux session called `mfz-pa` running
-`claude --channels plugin:discord@claude-plugins-official`. Attach with:
-
-```bash
-tmux attach -t mfz-pa
-```
-
-`Ctrl-b d` detaches. The session keeps running.
+- Discord Developer Portal → OAuth2 → URL Generator → check `bot`, pick the
+  permissions you want (Administrator on a server you own is simplest).
+- Open the generated URL, authorize it into your server.
+- DM the bot. It should reply within a few seconds.
 
 ## Day-to-day operations
 
-| What                    | Command                                              |
-| ----------------------- | ---------------------------------------------------- |
-| Check status            | `systemctl status mfz-pa.service`                    |
-| Restart the bot         | `systemctl restart mfz-pa.service`                   |
-| Stop the bot            | `systemctl stop mfz-pa.service`                      |
-| Tail the systemd log    | `journalctl -u mfz-pa.service -f`                    |
-| Watch live              | `tmux attach -t mfz-pa`  (`Ctrl-b d` to detach)      |
-| Edit the persona        | `nano /root/mfz-pa/CLAUDE.md` then restart service   |
-| Rotate the bot token    | edit `/etc/mfz-pa/env`, restart service              |
-| Upgrade Claude Code     | `npm i -g @anthropic-ai/claude-code@latest`, restart |
-
-## Updating the persona
-
-`CLAUDE.md` lives in two places:
-
-- **Source of truth**: `mfz-pa/CLAUDE.md` in this git repo (versioned).
-- **Live copy**: `/root/mfz-pa/CLAUDE.md` on the VPS (what Claude actually reads).
-
-When you change the persona, edit it in this repo, push, then on the VPS:
-
-```bash
-cd /path/to/melzayathub && git pull
-cp mfz-pa/CLAUDE.md /root/mfz-pa/CLAUDE.md
-systemctl restart mfz-pa.service
-```
+| What | Command |
+| --- | --- |
+| Status | `systemctl status mfz-pa.service` |
+| Restart | `systemctl restart mfz-pa.service` |
+| Stop | `systemctl stop mfz-pa.service` |
+| Follow logs | `journalctl -u mfz-pa.service -f` |
+| Update code | `cd /opt/mfz-pa && git pull && npm install && systemctl restart mfz-pa` |
+| Edit persona | edit `/opt/mfz-pa/CLAUDE.md`, restart service |
+| Rotate a secret | edit `/etc/mfz-pa/env`, restart service |
+| Forget one user's history | edit `/opt/mfz-pa/state/sessions.json`, remove that key, restart |
+| Forget everyone | `rm /opt/mfz-pa/state/sessions.json`, restart |
+| Switch model | set `MFZ_PA_MODEL=claude-opus-4-7` in `/etc/mfz-pa/env`, restart |
 
 ## Caveats
 
-- **Claude Code Channels is research preview.** Expect rough edges and
-  occasional breaking changes when you upgrade Claude Code.
-- **Auth is your claude.ai subscription.** Do not set `ANTHROPIC_API_KEY` in
-  the environment — that would override OAuth and start metered billing.
-- **Bot-to-bot Discord limits**: your PA can read other bots' messages and
-  moderate them, but cannot invoke their slash commands. Workaround: call
-  their HTTP/CLI APIs directly from the shell.
-- **Single CC session.** This setup dedicates one Claude Code session
-  exclusively to the bot. Run a separate `claude` invocation in a different
-  directory for any coding work, so they don't interfere.
+- **Subscription quota**: every reply consumes quota from your Claude.ai
+  subscription. Rate-limited users see `error: ...` until quota refills.
+- **Full shell access via Discord**: `permissionMode` is `bypassPermissions`
+  — the bot doesn't ask for approval before shell commands or file writes,
+  since there's no human in the loop to approve. The allowlist is the only
+  security boundary. Don't allowlist anyone you wouldn't hand SSH to.
+- **Bot-to-bot limits**: the bot can read and moderate other bots' messages
+  but cannot invoke their slash commands (Discord API restriction). For bots
+  that expose HTTP/CLI APIs, use Bash directly.
 
-## What's deferred
+## What's in this repo
 
-- Obsidian-as-memory integration (Git-bridged vault).
-- Long-term memory in SQLite + scheduled summary writes to Obsidian.
-- Pre-baked tools for managing specific other bots in the server.
+| Path | Purpose |
+| --- | --- |
+| `src/bot.mjs` | The bot — discord.js glue + Agent SDK `query()`. |
+| `CLAUDE.md` | System prompt / persona (fed to the Agent SDK on every call). |
+| `package.json` | npm deps (`@anthropic-ai/claude-agent-sdk`, `discord.js`). |
+| `setup.sh` | Idempotent bootstrap. |
+| `systemd/mfz-pa.service` | systemd unit. |
+| `.env.example` | Template for `/etc/mfz-pa/env`. |
 
-These will land in follow-up PRs.
+## Roadmap
+
+- Obsidian-as-memory (Git-bridged vault).
+- Scheduled summary jobs writing into Obsidian.
+- Pre-baked integrations with specific other bots the user runs.
+- Optional user-facing approvals for destructive shell actions.
