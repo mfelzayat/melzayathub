@@ -9,6 +9,7 @@ import path from "node:path";
 const HOME = process.env.MFZ_PA_HOME ?? process.cwd();
 const STATE_DIR = path.join(HOME, "state");
 const SESSIONS_FILE = path.join(STATE_DIR, "sessions.json");
+const ATTACHMENT_DIR = path.join(STATE_DIR, "attachments");
 const PERSONA_FILE = path.join(HOME, "CLAUDE.md");
 
 const MODEL = process.env.MFZ_PA_MODEL ?? "claude-sonnet-4-6";
@@ -25,6 +26,8 @@ const SAVE_DEBOUNCE_MS = 2000;
 const TYPING_INTERVAL_MS = 8000;
 const DISCORD_CHUNK_SIZE = 1900;
 const SHUTDOWN_GRACE_MS = 15000;
+const MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024; // Discord free-tier cap
+const ATTACHMENT_TTL_MS = 24 * 60 * 60 * 1000; // swept after 24h
 
 const MENTION_RE = /<@!?\d+>/g;
 
@@ -91,6 +94,78 @@ async function flushSave() {
     await fs.writeFile(SESSIONS_FILE, JSON.stringify(sessions, null, 2));
   } catch (err) {
     console.error("sessions.json flush failed:", err);
+  }
+}
+
+// Download a message's attachments to disk under state/attachments/<messageId>/.
+// Returns an array of { name, path, contentType, size } or { name, error }.
+async function downloadAttachments(message) {
+  if (!message.attachments?.size) return [];
+
+  const msgDir = path.join(ATTACHMENT_DIR, message.id);
+  await fs.mkdir(msgDir, { recursive: true });
+
+  const results = [];
+  for (const att of message.attachments.values()) {
+    if (att.size > MAX_ATTACHMENT_BYTES) {
+      results.push({ name: att.name, error: `too large (${att.size} bytes)` });
+      continue;
+    }
+    const safeName = att.name.replace(/[^\w.\-]/g, "_");
+    const localPath = path.join(msgDir, safeName);
+    try {
+      const res = await fetch(att.url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const buf = Buffer.from(await res.arrayBuffer());
+      await fs.writeFile(localPath, buf);
+      results.push({
+        name: att.name,
+        path: localPath,
+        contentType: att.contentType ?? "application/octet-stream",
+        size: att.size,
+      });
+    } catch (err) {
+      results.push({ name: att.name, error: err.message ?? String(err) });
+    }
+  }
+  return results;
+}
+
+function buildPrompt(textFromUser, attachments) {
+  if (!attachments.length) return textFromUser;
+
+  const lines = [];
+  lines.push(textFromUser || "(no text, only attachments)");
+  lines.push("");
+  lines.push("The user also sent these attachments on this Discord message:");
+  for (const a of attachments) {
+    if (a.path) {
+      lines.push(`- ${a.name} — ${a.contentType}, ${a.size} bytes — local path: ${a.path}`);
+    } else {
+      lines.push(`- ${a.name} — failed to download: ${a.error}`);
+    }
+  }
+  lines.push("");
+  lines.push("You can open any local path above with the Read tool (it handles");
+  lines.push("images, PDFs, text, notebooks). Summarise, quote, or act on them as");
+  lines.push("the user asked.");
+  return lines.join("\n");
+}
+
+// Background sweep: remove attachment dirs older than ATTACHMENT_TTL_MS.
+async function sweepAttachments() {
+  try {
+    const entries = await fs.readdir(ATTACHMENT_DIR).catch(() => []);
+    const cutoff = Date.now() - ATTACHMENT_TTL_MS;
+    for (const name of entries) {
+      const p = path.join(ATTACHMENT_DIR, name);
+      const stat = await fs.stat(p).catch(() => null);
+      if (stat && stat.isDirectory() && stat.mtimeMs < cutoff) {
+        await fs.rm(p, { recursive: true, force: true });
+      }
+    }
+  } catch (err) {
+    console.warn("attachment sweep warning:", err.message);
   }
 }
 
@@ -202,7 +277,8 @@ client.on(Events.MessageCreate, async (message) => {
   }
 
   const cleaned = message.content.replace(MENTION_RE, "").trim();
-  if (!cleaned) return;
+  const hasAttachments = message.attachments?.size > 0;
+  if (!cleaned && !hasAttachments) return;
 
   const controller = new AbortController();
   const typingTimer = setInterval(() => {
@@ -212,7 +288,15 @@ client.on(Events.MessageCreate, async (message) => {
 
   const job = (async () => {
     try {
-      const reply = await askClaude(message.author.id, cleaned, controller.signal);
+      const attachments = await downloadAttachments(message);
+      if (attachments.length) {
+        console.log(
+          `attachments for ${message.author.tag}:`,
+          attachments.map((a) => (a.path ? `${a.name} (${a.size}b)` : `${a.name} [${a.error}]`)).join(", ")
+        );
+      }
+      const prompt = buildPrompt(cleaned, attachments);
+      const reply = await askClaude(message.author.id, prompt, controller.signal);
       for (const part of splitForDiscord(reply)) {
         await message.reply({ content: part, allowedMentions: { repliedUser: false } });
       }
@@ -230,6 +314,9 @@ client.on(Events.MessageCreate, async (message) => {
   inflight.add(tracked);
   job.finally(() => inflight.delete(tracked));
 });
+
+setInterval(sweepAttachments, 60 * 60 * 1000).unref();
+void sweepAttachments();
 
 async function shutdown(signal) {
   if (shuttingDown) return;

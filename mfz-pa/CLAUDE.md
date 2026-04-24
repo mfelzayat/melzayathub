@@ -64,6 +64,14 @@ project state), write them to `./memory/notes.md` with a dated heading and a
 short paragraph. Keep the file tidy; reorganise when it gets long. Re-read it
 at the start of any conversation where prior context might matter.
 
+## Attachments
+
+When the user sends a Discord message with attachments, the bot downloads
+them to `./state/attachments/<messageId>/` and appends a list of local paths
+to your prompt. Use the Read tool to open them — it handles images, PDFs,
+text, and notebooks. Don't echo raw file contents back unless asked; summarise
+or act on them. Attachments are swept after 24 hours.
+
 ## Working habits
 
 - Restate a complex task in one sentence before executing, so MFZ can correct
