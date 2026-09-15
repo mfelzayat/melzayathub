@@ -111,27 +111,29 @@ export function Work() {
   const rest = pieces.filter((p) => !p.featured)
 
   return (
-    <section id="work" className="scroll-mt-24 px-5 py-20 md:px-10 md:py-28 lg:px-14">
+    <section
+      id="work"
+      className="scroll-mt-24 px-5 py-20 md:px-10 md:py-28 lg:px-14"
+    >
       <div className="mx-auto max-w-[1400px]">
         <Reveal className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
+            <p className="font-ui text-[11px] font-medium tracking-label text-strike uppercase">
               02 · Work
             </p>
-            <h2 className="mt-4 font-display text-4xl text-paper md:text-5xl lg:text-6xl">
+            <h2 className="mt-4 font-display fluid-section font-bold text-paper">
               Selected work
             </h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-mute md:text-right md:text-base">
-            Nights, films, and launches brands hire for. Full archive on YouTube —
-            these are the ones that still get asked about.
+            Nights, films, and launches brands hire for. Full archive on
+            YouTube — these are the ones that still get asked about.
           </p>
         </Reveal>
 
-        {/* Featured showreel */}
-        <Reveal className="mb-12 border border-line bg-ink-2 md:mb-16">
+        <Reveal className="mb-12 overflow-hidden rounded-sm border border-line bg-ink md:mb-16">
           <div className="grid lg:grid-cols-12">
-            <div className="relative aspect-video bg-ink lg:col-span-8">
+            <div className="relative aspect-video bg-void lg:col-span-8">
               <iframe
                 className="absolute inset-0 h-full w-full"
                 src={`https://www.youtube-nocookie.com/embed/${featured.videoId}?rel=0`}
@@ -144,24 +146,24 @@ export function Work() {
             </div>
             <div className="flex flex-col justify-between gap-6 border-t border-line p-6 md:p-8 lg:col-span-4 lg:border-t-0 lg:border-l">
               <div>
-                <p className="font-ui text-[10px] tracking-label text-copper uppercase">
+                <p className="font-ui text-[10px] tracking-label text-strike uppercase">
                   Featured · {featured.type}
                   {featured.year ? ` · ${featured.year}` : ''}
                 </p>
-                <h3 className="mt-3 font-display text-3xl text-paper md:text-4xl">
+                <h3 className="mt-3 font-display text-3xl font-bold tracking-tight text-paper md:text-4xl">
                   {featured.title}
                 </h3>
-                <p className="mt-2 text-sm text-paper-dim">{featured.client}</p>
+                <p className="mt-2 text-sm text-paper-soft/80">{featured.client}</p>
                 <p className="mt-5 text-sm leading-relaxed text-mute">
-                  The year cut down: launch nights, TVCs, fire shows, institutional
-                  films. If you only watch one piece, watch this.
+                  The year cut down: launch nights, TVCs, fire shows,
+                  institutional films. If you only watch one piece, watch this.
                 </p>
               </div>
               <a
                 href={watchUrl(featured.videoId)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-ui inline-flex w-fit border border-copper/50 px-4 py-2 text-[11px] font-semibold tracking-label text-copper uppercase transition hover:border-copper hover:bg-copper hover:text-ink"
+                className="font-ui inline-flex w-fit border border-strike/50 px-4 py-2 text-[11px] font-semibold tracking-label text-strike uppercase transition hover:border-strike hover:bg-strike hover:text-paper"
               >
                 Open on YouTube ↗
               </a>
@@ -169,39 +171,47 @@ export function Work() {
           </div>
         </Reveal>
 
-        {/* Grid of cards */}
-        <ul className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {rest.map((p, i) => (
             <Reveal key={p.videoId} as="li" delayMs={(i % 3) * 50}>
               <a
                 href={watchUrl(p.videoId)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col bg-ink transition hover:bg-ink-2"
+                className="group @container/work-card flex h-full flex-col overflow-hidden rounded-sm border border-line bg-ink transition hover:border-strike/50 hover:bg-ink-2"
               >
                 <div className="relative aspect-video overflow-hidden bg-ink-3">
                   <img
                     src={thumbUrl(p.videoId)}
                     alt=""
                     loading="lazy"
-                    className="h-full w-full object-cover opacity-85 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
+                    className="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-[1.04] group-hover:opacity-100"
                   />
-                  <span className="absolute bottom-3 left-3 font-ui border border-paper/20 bg-ink/80 px-2 py-1 text-[9px] tracking-label text-paper uppercase backdrop-blur-sm">
+                  <div
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/70 via-transparent to-transparent opacity-80"
+                    aria-hidden
+                  />
+                  <span className="absolute bottom-3 left-3 font-ui border border-paper/15 bg-void/75 px-2 py-1 text-[9px] tracking-label text-paper uppercase backdrop-blur-sm">
                     {p.type}
                     {p.year ? ` · ${p.year}` : ''}
                   </span>
+                  <span className="absolute inset-0 flex items-center justify-center opacity-0 transition group-hover:opacity-100">
+                    <span className="font-ui rounded-full border border-strike bg-strike/90 px-3 py-1.5 text-[10px] font-semibold tracking-label text-paper uppercase shadow-[0_0_24px_color-mix(in_oklab,#e8282c_40%,transparent)]">
+                      Watch
+                    </span>
+                  </span>
                 </div>
                 <div className="flex flex-1 flex-col gap-2 border-t border-line p-5">
-                  <h3 className="font-display text-xl leading-snug text-paper md:text-2xl">
+                  <h3 className="font-display text-xl font-semibold leading-snug tracking-tight text-paper md:text-2xl">
                     {p.title}
                   </h3>
-                  <p className="text-sm text-paper-dim">{p.client}</p>
+                  <p className="text-sm text-paper-soft/75">{p.client}</p>
                   {p.talent && (
-                    <p className="font-ui text-[10px] tracking-label text-mute uppercase">
+                    <p className="work-meta font-ui text-[10px] tracking-label text-mute uppercase">
                       {p.talent}
                     </p>
                   )}
-                  <p className="mt-auto pt-3 font-ui text-[10px] tracking-label text-copper uppercase transition group-hover:text-copper-bright">
+                  <p className="mt-auto pt-3 font-ui text-[10px] tracking-label text-strike uppercase transition group-hover:text-strike-bright">
                     Watch ↗
                   </p>
                 </div>
@@ -212,13 +222,14 @@ export function Work() {
 
         <Reveal className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
           <p className="text-sm text-mute">
-            ~117 pieces on the channel. Not a highlight reel of vibes — receipts.
+            ~117 pieces on the channel. Not a highlight reel of vibes —
+            receipts.
           </p>
           <a
             href="https://www.youtube.com/@mfelzayat"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-ui text-[11px] font-semibold tracking-label text-copper uppercase transition hover:text-copper-bright"
+            className="font-ui text-[11px] font-semibold tracking-label text-strike uppercase transition hover:text-strike-bright"
           >
             youtube.com/@mfelzayat ↗
           </a>

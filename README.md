@@ -1,40 +1,28 @@
-# Melzayat Hub — melzayathub.com
+# Melzayat Hub (hub-v5)
 
-Personal hub for **Mohamed El Zayat**, Co-Founder & CEO of Strike Media · Producer (Cairo).
+Personal site for **Mohamed El Zayat** — Co-Founder & CEO, Strike Media · Producer.
 
-Copper/paper editorial system, Instrument Serif + Syne, custom Hub Frame SVG. Work-proof layout: Selected Work from the YouTube archive, blunt producer-CEO copy — not a SaaS template.
-
-See `design.md` for design diagnosis and hub-v4 work-proof notes.
+Cinematic dark agency redesign: Strike Media red/black palette, Space Grotesk + Syne, React Three Fiber ambience, Motion reveals, Lenis smooth scroll.
 
 ## Stack
 
-- **Vite** + **React 19** + **TypeScript**
-- **Tailwind CSS v4** (`@tailwindcss/vite`)
-- IntersectionObserver scroll reveals (no Framer)
-- YouTube: one privacy-friendly showreel embed + thumbnail cards
-- Static output for **Cloudflare Pages** / Caddy
+- Vite 8 · React 19 · Tailwind CSS 4 · TypeScript
+- `@react-three/fiber` + `@react-three/drei` + `three` (lazy WebGL backdrop)
+- `motion` · `lenis`
 
-## Scripts
+## Develop
 
 ```bash
 npm install
-npm run dev      # local development
-npm run build    # production build → dist/
-npm run preview  # preview production build
+npm run dev
 ```
 
-## Deploy
+## Build (Cloudflare Pages → `dist/`)
 
-| Setting | Value |
-|--------|--------|
-| Framework preset | Vite |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | `/` (repo root) |
-| Node version | 20+ recommended |
+```bash
+npm run build
+```
 
-SPA fallback: `public/_redirects` (`/* → /index.html` 200).
+## Design
 
-## Archive
-
-Previous site content (`alayaa/`, `projects/`) lives under `archive/`.
+See `design.md` for palette tokens, IA, and tech notes.
