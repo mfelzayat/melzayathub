@@ -9,7 +9,7 @@
   --color-paper: #f3eee4;
   --color-paper-dim: #cfc6b6;
   --color-mute: #8a8378;
-  --color-line: color-mix(in oklab, #f3eee4 12%, transparent);
+  --color-line: color-mix(in oklab, #f3eee4 14%, transparent);
   --color-copper: #d4843a;
   --color-copper-bright: #e9a05a;
   --color-copper-dim: #a36228;
@@ -66,10 +66,10 @@
 @layer utilities {
   .reveal {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(16px);
     transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
 
@@ -78,11 +78,29 @@
     transform: translateY(0);
   }
 
+  .hub-frame-drift {
+    transform-origin: 50% 50%;
+    animation: hub-drift 14s ease-in-out infinite alternate;
+  }
+
+  @keyframes hub-drift {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(4px, -6px);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal {
       opacity: 1;
       transform: none;
       transition: none;
+    }
+
+    .hub-frame-drift {
+      animation: none;
     }
   }
 }

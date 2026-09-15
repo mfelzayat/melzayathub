@@ -6,7 +6,7 @@ const ventures = [
     name: 'Strike Media',
     role: 'Founder & CEO',
     blurb:
-      'Full-stack media company — strategy, creative, and digital execution. Studio front at Strike Studio.',
+      'Media company: strategy, creative, digital execution. Public front at Strike Studio.',
     href: 'https://strikestudio.net',
     cta: 'strikestudio.net',
   },
@@ -15,16 +15,15 @@ const ventures = [
     name: 'StrikeMedia EMS',
     role: 'Event operations',
     blurb:
-      'QR invitations and event ops — the system behind live production workflows.',
+      'QR invitations and event ops. The logistics layer under live production.',
     href: 'https://ems.strikemedia.net',
     cta: 'ems.strikemedia.net',
   },
   {
     num: '03',
     name: 'Labs',
-    role: 'Experiments',
-    blurb:
-      'Melzayat experiments — city platforms and product probes in the spirit of newcairo.live. Ideas that earn their keep.',
+    role: 'Side builds',
+    blurb: 'Small products and city tools. Ships when ready. No pitch deck.',
     href: null,
     cta: null,
   },
@@ -34,15 +33,15 @@ export function Ventures() {
   return (
     <section
       id="ventures"
-      className="scroll-mt-24 border-y border-line bg-ink-2 px-5 py-24 md:px-10 md:py-32 lg:px-14"
+      className="scroll-mt-24 border-y border-line bg-ink-2 px-5 py-20 md:px-10 md:py-28 lg:px-14"
     >
       <div className="mx-auto max-w-[1400px]">
-        <Reveal className="mb-16 max-w-2xl md:mb-20">
+        <Reveal className="mb-12 max-w-2xl md:mb-16">
           <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
-            03 — Ventures
+            03 · Ventures
           </p>
           <h2 className="mt-5 font-display text-5xl text-paper md:text-6xl">
-            Companies &amp; platforms
+            Companies I run
           </h2>
         </Reveal>
 
@@ -80,18 +79,18 @@ export function Ventures() {
             )
 
             return (
-              <Reveal key={v.name} as="li" delayMs={i * 70}>
+              <Reveal key={v.name} as="li" delayMs={i * 60}>
                 {v.href ? (
                   <a
                     href={v.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group grid gap-4 py-10 transition hover:bg-ink-3/60 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-12"
+                    className="group grid gap-4 py-9 transition hover:bg-ink-3/60 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-11"
                   >
                     {inner}
                   </a>
                 ) : (
-                  <div className="grid gap-4 py-10 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-12">
+                  <div className="grid gap-4 py-9 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-11">
                     {inner}
                   </div>
                 )}

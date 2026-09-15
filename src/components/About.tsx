@@ -1,36 +1,36 @@
 import { Reveal } from './Reveal'
+import { HubFrame } from './HubFrame'
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-24 px-5 py-24 md:px-10 md:py-32 lg:px-14">
-      <div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-12 lg:gap-16">
+    <section id="about" className="relative scroll-mt-24 overflow-hidden px-5 py-20 md:px-10 md:py-28 lg:px-14">
+      <div className="pointer-events-none absolute -right-8 top-16 hidden lg:block" aria-hidden>
+        <HubFrame ghost className="h-[420px] w-auto opacity-40" />
+      </div>
+
+      <div className="relative mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-12 lg:gap-14">
         <Reveal className="lg:col-span-4">
           <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
-            02 — About
+            02 · About
           </p>
           <h2 className="mt-5 font-display text-5xl leading-[0.95] text-paper md:text-6xl">
-            Cairo.
+            Operator
             <br />
-            Companies.
-            <br />
-            Infrastructure.
+            from Cairo
           </h2>
         </Reveal>
 
-        <div className="space-y-7 text-lg leading-relaxed text-paper-dim md:text-xl lg:col-span-7 lg:col-start-6">
+        <div className="space-y-6 text-lg leading-relaxed text-paper-dim md:text-xl lg:col-span-7 lg:col-start-6">
           <Reveal as="p">
-            Based in Cairo, Mohamed El Zayat runs Strike Media — a media company
-            built for brands that need strategy, creative, and execution in the
-            same room.
+            I run Strike Media from Cairo: strategy, creative, and delivery in one
+            company. Brands hire us to ship work, not slide decks.
           </Reveal>
-          <Reveal as="p" delayMs={80}>
-            The work is not campaigns alone. It is the operating layer: platforms
-            like StrikeMedia EMS that turn invitations, events, and live
-            production into systems you can run.
+          <Reveal as="p" delayMs={70}>
+            Beside the studio sits StrikeMedia EMS: QR invitations, check-in, and the
+            ops stack behind live events. Same standard. Fewer handoffs.
           </Reveal>
-          <Reveal as="p" delayMs={160} className="text-paper">
-            Builder first. Operator always. Spectacle only when it earns the
-            frame.
+          <Reveal as="p" delayMs={140} className="text-paper">
+            If a tool is missing, I build it. When the show starts, I run the floor.
           </Reveal>
         </div>
       </div>
