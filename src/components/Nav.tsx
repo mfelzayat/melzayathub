@@ -39,7 +39,7 @@ export function Nav() {
           href="#top"
           className="flex items-center gap-3 text-paper transition hover:text-copper"
           onClick={() => setOpen(false)}
-          aria-label="Mohamed El Zayat — home"
+          aria-label="Mohamed El Zayat, home"
         >
           <Monogram className="h-7 w-7" />
           <span className="font-ui text-xs font-semibold tracking-label uppercase">

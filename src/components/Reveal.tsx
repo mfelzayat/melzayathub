@@ -7,7 +7,7 @@ type Props = {
   as?: 'div' | 'li' | 'span' | 'p' | 'h2' | 'h3'
 }
 
-/** Restrained fade/rise via IntersectionObserver — no bounce. */
+/** Restrained fade/rise via IntersectionObserver. No bounce, no Framer. */
 export function Reveal({
   children,
   className = '',
@@ -20,6 +20,12 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShown(true)
+      return
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -27,10 +33,17 @@ export function Reveal({
           io.disconnect()
         }
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
     )
     io.observe(el)
-    return () => io.disconnect()
+
+    // Fail-open so full-page captures / odd IO edge cases never leave copy blank
+    const failOpen = window.setTimeout(() => setShown(true), 2400)
+
+    return () => {
+      io.disconnect()
+      window.clearTimeout(failOpen)
+    }
   }, [])
 
   return (

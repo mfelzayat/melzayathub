@@ -4,12 +4,12 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="scroll-mt-24 border-t border-line bg-paper px-5 py-24 text-ink md:px-10 md:py-32 lg:px-14"
+      className="scroll-mt-24 border-t border-line bg-paper px-5 py-20 text-ink md:px-10 md:py-28 lg:px-14"
     >
       <div className="mx-auto max-w-[1400px]">
         <Reveal>
           <p className="font-ui text-[11px] font-medium tracking-label text-copper-dim uppercase">
-            05 — Contact
+            05 · Contact
           </p>
           <h2 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] text-ink">
             Direct line.
@@ -18,7 +18,7 @@ export function Contact() {
           </h2>
         </Reveal>
 
-        <Reveal delayMs={100} className="mt-12 md:mt-16">
+        <Reveal delayMs={90} className="mt-10 md:mt-14">
           <a
             href="mailto:melzayat@strikemedia.net"
             className="group inline-flex flex-col gap-3 border-b-2 border-ink pb-3 transition hover:border-copper md:flex-row md:items-end md:gap-6"
@@ -30,9 +30,8 @@ export function Contact() {
               Open mail ↗
             </span>
           </a>
-          <p className="mt-8 max-w-md text-base leading-relaxed text-mute">
-            Partnerships, platforms, and serious conversations. Write when you
-            have something worth building.
+          <p className="mt-7 max-w-md text-base leading-relaxed text-mute">
+            Email me for work, partnerships, or platforms. Keep it concrete.
           </p>
         </Reveal>
       </div>

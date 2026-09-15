@@ -1,8 +1,10 @@
 # Melzayat Hub — melzayathub.com
 
-Editorial personal hub for **Mohamed El Zayat**, Founder & CEO of Strike Media (Cairo).
+Personal hub for **Mohamed El Zayat**, Founder & CEO of Strike Media (Cairo).
 
-Magazine / agency-reel art direction — Instrument Serif + Syne, warm ink & paper, electric copper accent. Not a SaaS template.
+Copper/paper editorial system, Instrument Serif + Syne, custom Hub Frame SVG. Blunt operator copy — not a SaaS template.
+
+See `design.md` for the design diagnosis and reconstruction notes (hub-v3).
 
 ## Stack
 
