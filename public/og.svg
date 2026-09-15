@@ -1,20 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#0c0b09"/>
-  <rect x="0" y="0" width="10" height="630" fill="#d4843a"/>
-  <!-- Mini Hub Frame -->
-  <g transform="translate(860,120)" fill="none">
-    <path d="M12 28H36M12 28V52" stroke="#d4843a" stroke-width="2"/>
-    <path d="M204 28H228M228 28V52" stroke="#d4843a" stroke-width="2"/>
-    <path d="M12 248H36M12 248V272" stroke="#d4843a" stroke-width="2"/>
-    <path d="M204 272H228M228 248V272" stroke="#d4843a" stroke-width="2"/>
-    <rect x="40" y="56" width="160" height="200" stroke="rgba(243,238,228,0.28)" stroke-width="1.5"/>
-    <rect x="64" y="84" width="140" height="160" stroke="#f3eee4" stroke-width="1.5"/>
-    <path d="M52 230L200 90" stroke="#d4843a" stroke-width="2"/>
-    <rect x="176" y="200" width="32" height="32" fill="#d4843a"/>
-  </g>
-  <text x="72" y="120" font-family="system-ui, sans-serif" font-size="18" letter-spacing="6" fill="#d4843a">CAIRO · STRIKE MEDIA</text>
-  <text x="72" y="270" font-family="Georgia, serif" font-size="72" fill="#f3eee4">Mohamed El Zayat</text>
-  <text x="72" y="340" font-family="Georgia, serif" font-size="30" fill="#cfc6b6">Founder &amp; CEO, Strike Media.</text>
-  <text x="72" y="390" font-family="Georgia, serif" font-size="28" fill="#cfc6b6">I build the company and the systems we run it on.</text>
-  <text x="72" y="540" font-family="system-ui, sans-serif" font-size="22" fill="#d4843a">melzayathub.com</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#050505"/>
+  <circle cx="980" cy="120" r="220" fill="#e8282c" opacity="0.12"/>
+  <circle cx="1040" cy="80" r="120" fill="#ff3236" opacity="0.08"/>
+  <ellipse cx="140" cy="480" rx="90" ry="110" fill="#0a0a0a" stroke="#e8282c" stroke-width="4"/>
+  <path d="M98 545 155 470H112l10-48 65 74h-42l-9 49z" fill="#e8282c"/>
+  <text x="80" y="220" fill="#ffffff" font-family="Space Grotesk, Syne, sans-serif" font-size="72" font-weight="700">Mohamed El Zayat</text>
+  <text x="80" y="290" fill="#8c8c8c" font-family="Syne, sans-serif" font-size="28" letter-spacing="4">CO-FOUNDER &amp; CEO · STRIKE MEDIA · PRODUCER</text>
+  <rect x="80" y="340" width="64" height="4" fill="#e8282c"/>
+  <text x="80" y="400" fill="#f2f2f2" font-family="Space Grotesk, sans-serif" font-size="32">Taste over volume.</text>
+  <text x="80" y="560" fill="#8c8c8c" font-family="Syne, sans-serif" font-size="22">melzayathub.com</text>
 </svg>

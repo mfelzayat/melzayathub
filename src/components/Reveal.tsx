@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
+import type { ReactNode } from 'react'
 
 type Props = {
   children: ReactNode
@@ -7,50 +8,41 @@ type Props = {
   as?: 'div' | 'li' | 'span' | 'p' | 'h2' | 'h3'
 }
 
-/** Restrained fade/rise via IntersectionObserver. No bounce, no Framer. */
+const tags = {
+  div: motion.div,
+  li: motion.li,
+  span: motion.span,
+  p: motion.p,
+  h2: motion.h2,
+  h3: motion.h3,
+} as const
+
+/** Scroll reveal via Motion — respects prefers-reduced-motion. */
 export function Reveal({
   children,
   className = '',
   delayMs = 0,
-  as: Tag = 'div',
+  as = 'div',
 }: Props) {
-  const ref = useRef<HTMLElement | null>(null)
-  const [shown, setShown] = useState(false)
+  const reduce = useReducedMotion()
+  const Tag = tags[as]
 
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(true)
-      return
-    }
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setShown(true)
-          io.disconnect()
-        }
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
-    )
-    io.observe(el)
-
-    // Fail-open so full-page captures / odd IO edge cases never leave copy blank
-    const failOpen = window.setTimeout(() => setShown(true), 2400)
-
-    return () => {
-      io.disconnect()
-      window.clearTimeout(failOpen)
-    }
-  }, [])
+  if (reduce) {
+    const Static = as
+    return <Static className={className}>{children}</Static>
+  }
 
   return (
     <Tag
-      ref={ref as never}
-      className={`reveal ${shown ? 'reveal-in' : ''} ${className}`}
-      style={{ transitionDelay: shown ? `${delayMs}ms` : '0ms' }}
+      className={className}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -8% 0px', amount: 0.12 }}
+      transition={{
+        duration: 0.55,
+        delay: delayMs / 1000,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </Tag>

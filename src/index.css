@@ -1,35 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-ui: "Syne", ui-sans-serif, system-ui, sans-serif;
-  --color-ink: #0c0b09;
-  --color-ink-2: #141210;
-  --color-ink-3: #1c1916;
-  --color-paper: #f3eee4;
-  --color-paper-dim: #cfc6b6;
-  --color-mute: #8a8378;
-  --color-line: color-mix(in oklab, #f3eee4 14%, transparent);
-  --color-copper: #d4843a;
-  --color-copper-bright: #e9a05a;
-  --color-copper-dim: #a36228;
+
+  --color-void: #050505;
+  --color-ink: #0a0a0a;
+  --color-ink-2: #141414;
+  --color-ink-3: #1a1a1a;
+  --color-paper: #ffffff;
+  --color-paper-soft: #f2f2f2;
+  --color-mute: #8c8c8c;
+  --color-line: #2a2a2a;
+  --color-strike: #e8282c;
+  --color-strike-deep: #d7272a;
+  --color-strike-bright: #ff3236;
+  --color-strike-glow: color-mix(in oklab, #e8282c 35%, transparent);
 }
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html.lenis,
+    html.lenis body {
+      height: auto;
+    }
+  }
+
   body {
-    @apply bg-ink text-paper font-ui;
+    @apply bg-void text-paper font-ui;
     min-height: 100dvh;
   }
 
   ::selection {
-    background: color-mix(in oklab, #d4843a 55%, transparent);
-    color: #0c0b09;
+    background: color-mix(in oklab, #e8282c 55%, transparent);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-strike);
+    outline-offset: 3px;
   }
 }
 
@@ -39,68 +54,51 @@
   }
 
   .tracking-label {
-    letter-spacing: 0.22em;
+    letter-spacing: 0.2em;
   }
 
-  .grain {
-    position: relative;
+  .fluid-display {
+    font-size: clamp(2.75rem, 9vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
   }
 
-  .grain::after {
+  .fluid-section {
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+
+  .strike-glow {
+    box-shadow:
+      0 0 40px color-mix(in oklab, #e8282c 22%, transparent),
+      0 0 80px color-mix(in oklab, #e8282c 10%, transparent);
+  }
+
+  .red-tittle::after {
     content: "";
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    opacity: 0.045;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
+    display: inline-block;
+    width: 0.18em;
+    height: 0.18em;
+    margin-inline-start: 0.02em;
+    margin-block-end: 0.55em;
+    border-radius: 999px;
+    background: var(--color-strike);
+    vertical-align: super;
   }
 
   .rule {
     height: 1px;
     background: var(--color-line);
   }
-}
 
-@layer utilities {
-  .reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    transition:
-      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
+  .panel {
+    @apply border border-line bg-ink-2/80 backdrop-blur-sm;
   }
 
-  .reveal-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .hub-frame-drift {
-    transform-origin: 50% 50%;
-    animation: hub-drift 14s ease-in-out infinite alternate;
-  }
-
-  @keyframes hub-drift {
-    from {
-      transform: translate(0, 0);
-    }
-    to {
-      transform: translate(4px, -6px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-
-    .hub-frame-drift {
-      animation: none;
+  @container work-card (min-width: 280px) {
+    .work-meta {
+      font-size: 0.7rem;
     }
   }
 }

@@ -41,14 +41,14 @@ export function Ventures() {
   return (
     <section
       id="ventures"
-      className="scroll-mt-24 border-y border-line bg-ink-2 px-5 py-20 md:px-10 md:py-28 lg:px-14"
+      className="scroll-mt-24 border-y border-line bg-ink px-5 py-20 md:px-10 md:py-28 lg:px-14"
     >
       <div className="mx-auto max-w-[1400px]">
         <Reveal className="mb-12 max-w-2xl md:mb-16">
-          <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
+          <p className="font-ui text-[11px] font-medium tracking-label text-strike uppercase">
             04 · Ventures
           </p>
-          <h2 className="mt-5 font-display text-5xl text-paper md:text-6xl">
+          <h2 className="mt-5 font-display fluid-section font-bold text-paper">
             Company &amp; tools
           </h2>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-mute">
@@ -57,58 +57,39 @@ export function Ventures() {
           </p>
         </Reveal>
 
-        <ul className="divide-y divide-line border-y border-line">
-          {ventures.map((v, i) => {
-            const inner = (
-              <>
-                <div className="flex items-baseline justify-between gap-4 md:col-span-3">
-                  <span className="font-ui text-[11px] tracking-label text-copper uppercase">
+        <ul className="grid gap-3 md:grid-cols-2">
+          {ventures.map((v, i) => (
+            <Reveal key={v.name} as="li" delayMs={i * 50}>
+              <a
+                href={v.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-sm border border-line bg-ink-2 p-6 transition hover:border-strike/45 hover:bg-ink-3 md:p-8"
+              >
+                <div
+                  className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-strike/0 blur-2xl transition group-hover:bg-strike/20"
+                  aria-hidden
+                />
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="font-ui text-[11px] tracking-label text-strike uppercase">
                     {v.num}
                   </span>
-                  <span className="font-ui text-[10px] tracking-label text-mute uppercase md:hidden">
+                  <span className="font-ui text-[10px] tracking-label text-mute uppercase">
                     {v.role}
                   </span>
                 </div>
-                <div className="md:col-span-4">
-                  <h3 className="font-display text-3xl text-paper md:text-4xl">
-                    {v.name}
-                  </h3>
-                  <p className="mt-1 hidden font-ui text-[10px] tracking-label text-mute uppercase md:block">
-                    {v.role}
-                  </p>
-                </div>
-                <div className="md:col-span-5">
-                  <p className="text-base leading-relaxed text-paper-dim md:text-lg">
-                    {v.blurb}
-                  </p>
-                  {v.cta && (
-                    <p className="mt-4 font-ui text-[11px] tracking-label text-copper uppercase transition group-hover:text-copper-bright">
-                      {v.cta} ↗
-                    </p>
-                  )}
-                </div>
-              </>
-            )
-
-            return (
-              <Reveal key={v.name} as="li" delayMs={i * 60}>
-                {v.href ? (
-                  <a
-                    href={v.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group grid gap-4 py-9 transition hover:bg-ink-3/60 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-11"
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <div className="grid gap-4 py-9 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-11">
-                    {inner}
-                  </div>
-                )}
-              </Reveal>
-            )
-          })}
+                <h3 className="font-display text-2xl font-bold tracking-tight text-paper md:text-3xl">
+                  {v.name}
+                </h3>
+                <p className="flex-1 text-base leading-relaxed text-mute">
+                  {v.blurb}
+                </p>
+                <p className="font-ui text-[11px] tracking-label text-strike uppercase transition group-hover:text-strike-bright">
+                  {v.cta} ↗
+                </p>
+              </a>
+            </Reveal>
+          ))}
         </ul>
       </div>
     </section>
