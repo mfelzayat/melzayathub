@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Monogram } from './Monogram'
 
 const links = [
   { href: '#about', label: 'About' },
@@ -14,7 +13,7 @@ export function Nav() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -29,27 +28,31 @@ export function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'border-b border-white/5 bg-ink/80 backdrop-blur-xl'
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled || open
+          ? 'border-b border-line bg-ink/90 backdrop-blur-md'
           : 'bg-transparent'
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
+      <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-4 md:px-10 lg:px-14">
         <a
           href="#top"
-          className="font-display text-xl tracking-wide text-snow transition hover:text-crimson md:text-2xl"
+          className="flex items-center gap-3 text-paper transition hover:text-copper"
           onClick={() => setOpen(false)}
+          aria-label="Mohamed El Zayat — home"
         >
-          MEZ
+          <Monogram className="h-7 w-7" />
+          <span className="font-ui text-xs font-semibold tracking-label uppercase">
+            MEZ
+          </span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="text-sm font-medium tracking-wide text-mist transition hover:text-snow"
+                className="font-ui text-[11px] font-medium tracking-label text-mute uppercase transition hover:text-paper"
               >
                 {l.label}
               </a>
@@ -58,58 +61,50 @@ export function Nav() {
           <li>
             <a
               href="mailto:melzayat@strikemedia.net"
-              className="rounded-full border border-crimson/40 bg-crimson/10 px-4 py-2 text-sm font-medium text-crimson transition hover:border-crimson hover:bg-crimson/20"
+              className="font-ui inline-flex items-center border border-copper/50 px-4 py-2 text-[11px] font-semibold tracking-label text-copper uppercase transition hover:border-copper hover:bg-copper hover:text-ink"
             >
-              Get in touch
+              Write
             </a>
           </li>
         </ul>
 
         <button
           type="button"
-          className="rounded-lg p-2 text-snow md:hidden"
+          className="font-ui text-[11px] font-semibold tracking-label text-paper uppercase md:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? 'Close' : 'Menu'}
         </button>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-            className="border-b border-white/5 bg-ink/95 backdrop-blur-xl md:hidden"
-          >
-            <ul className="flex flex-col gap-1 px-5 py-6">
-              {links.map((l) => (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className="block py-3 text-lg text-mist transition hover:text-snow"
-                    onClick={() => setOpen(false)}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-              <li className="pt-2">
+      {open && (
+        <div className="border-t border-line bg-ink md:hidden">
+          <ul className="flex flex-col px-5 py-8">
+            {links.map((l) => (
+              <li key={l.href}>
                 <a
-                  href="mailto:melzayat@strikemedia.net"
-                  className="inline-flex rounded-full border border-crimson/40 bg-crimson/10 px-4 py-2.5 text-sm font-medium text-crimson"
+                  href={l.href}
+                  className="font-display block border-b border-line py-4 text-3xl text-paper"
                   onClick={() => setOpen(false)}
                 >
-                  Get in touch
+                  {l.label}
                 </a>
               </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+            <li className="pt-6">
+              <a
+                href="mailto:melzayat@strikemedia.net"
+                className="font-ui text-sm tracking-label text-copper uppercase"
+                onClick={() => setOpen(false)}
+              >
+                melzayat@strikemedia.net
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   )
 }

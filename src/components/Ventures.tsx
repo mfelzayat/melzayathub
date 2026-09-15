@@ -1,97 +1,101 @@
-import { motion } from 'framer-motion'
-import { ArrowUpRight, FlaskConical, Radio, Server } from 'lucide-react'
+import { Reveal } from './Reveal'
 
 const ventures = [
   {
+    num: '01',
     name: 'Strike Media',
     role: 'Founder & CEO',
     blurb:
-      'Full-stack media and growth company — strategy, creative, and digital execution for brands that need to move.',
-    href: 'https://strikemedia.net',
-    icon: Radio,
-    external: true,
+      'Full-stack media company — strategy, creative, and digital execution. Studio front at Strike Studio.',
+    href: 'https://strikestudio.net',
+    cta: 'strikestudio.net',
   },
   {
+    num: '02',
     name: 'StrikeMedia EMS',
-    role: 'Enterprise platform',
+    role: 'Event operations',
     blurb:
-      'Operations and event management system powering live production workflows at scale.',
+      'QR invitations and event ops — the system behind live production workflows.',
     href: 'https://ems.strikemedia.net',
-    icon: Server,
-    external: true,
+    cta: 'ems.strikemedia.net',
   },
   {
+    num: '03',
     name: 'Labs',
-    role: 'Exploration',
+    role: 'Experiments',
     blurb:
-      'Internal experiments across product, AI, and new market formats — where ideas earn their way forward.',
-    href: '#focus',
-    icon: FlaskConical,
-    external: false,
+      'Melzayat experiments — city platforms and product probes in the spirit of newcairo.live. Ideas that earn their keep.',
+    href: null,
+    cta: null,
   },
 ]
 
 export function Ventures() {
   return (
-    <section id="ventures" className="scroll-mt-24 px-5 py-24 md:px-8 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.55 }}
-          className="mb-14 max-w-2xl"
-        >
-          <p className="text-sm font-medium tracking-[0.2em] text-crimson uppercase">
-            Ventures
+    <section
+      id="ventures"
+      className="scroll-mt-24 border-y border-line bg-ink-2 px-5 py-24 md:px-10 md:py-32 lg:px-14"
+    >
+      <div className="mx-auto max-w-[1400px]">
+        <Reveal className="mb-16 max-w-2xl md:mb-20">
+          <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
+            03 — Ventures
           </p>
-          <h2 className="mt-4 font-display text-4xl text-snow md:text-5xl">
+          <h2 className="mt-5 font-display text-5xl text-paper md:text-6xl">
             Companies &amp; platforms
           </h2>
-          <p className="mt-4 text-lg text-mist">
-            Active work spanning media, enterprise software, and exploratory
-            labs.
-          </p>
-        </motion.div>
+        </Reveal>
 
-        <ul className="grid gap-4 md:grid-cols-3">
+        <ul className="divide-y divide-line border-y border-line">
           {ventures.map((v, i) => {
-            const Icon = v.icon
-            return (
-              <motion.li
-                key={v.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-              >
-                <a
-                  href={v.href}
-                  {...(v.external
-                    ? { target: '_blank', rel: 'noopener noreferrer' }
-                    : {})}
-                  className="group flex h-full flex-col rounded-2xl border border-white/8 bg-ink-elevated/80 p-6 transition hover:border-crimson/35 hover:bg-ink-soft md:p-7"
-                >
-                  <div className="mb-6 flex items-start justify-between">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-crimson/10 text-crimson ring-1 ring-crimson/20">
-                      <Icon size={20} strokeWidth={1.75} />
-                    </span>
-                    {v.external && (
-                      <ArrowUpRight
-                        size={18}
-                        className="text-fog transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-crimson"
-                      />
-                    )}
-                  </div>
-                  <h3 className="font-display text-2xl text-snow">{v.name}</h3>
-                  <p className="mt-1 text-xs font-medium tracking-wider text-crimson uppercase">
+            const inner = (
+              <>
+                <div className="flex items-baseline justify-between gap-4 md:col-span-3">
+                  <span className="font-ui text-[11px] tracking-label text-copper uppercase">
+                    {v.num}
+                  </span>
+                  <span className="font-ui text-[10px] tracking-label text-mute uppercase md:hidden">
+                    {v.role}
+                  </span>
+                </div>
+                <div className="md:col-span-4">
+                  <h3 className="font-display text-3xl text-paper md:text-4xl">
+                    {v.name}
+                  </h3>
+                  <p className="mt-1 hidden font-ui text-[10px] tracking-label text-mute uppercase md:block">
                     {v.role}
                   </p>
-                  <p className="mt-4 flex-1 text-sm leading-relaxed text-mist">
+                </div>
+                <div className="md:col-span-5">
+                  <p className="text-base leading-relaxed text-paper-dim md:text-lg">
                     {v.blurb}
                   </p>
-                </a>
-              </motion.li>
+                  {v.cta && (
+                    <p className="mt-4 font-ui text-[11px] tracking-label text-copper uppercase transition group-hover:text-copper-bright">
+                      {v.cta} ↗
+                    </p>
+                  )}
+                </div>
+              </>
+            )
+
+            return (
+              <Reveal key={v.name} as="li" delayMs={i * 70}>
+                {v.href ? (
+                  <a
+                    href={v.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group grid gap-4 py-10 transition hover:bg-ink-3/60 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-12"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div className="grid gap-4 py-10 md:grid-cols-12 md:items-start md:gap-8 md:px-2 md:py-12">
+                    {inner}
+                  </div>
+                )}
+              </Reveal>
             )
           })}
         </ul>
