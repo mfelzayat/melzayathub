@@ -7,12 +7,30 @@ export function Footer() {
         <div className="flex items-center gap-3">
           <Monogram className="h-6 w-6" on="paper" />
           <p className="font-ui text-[11px] tracking-label uppercase">
-            Mohamed El Zayat · Strike Media
+            Mohamed El Zayat · Strike Media · Producer
           </p>
         </div>
-        <p className="font-ui text-[11px] tracking-label text-mute uppercase">
-          © 2026 · Cairo
-        </p>
+        <div className="flex flex-wrap items-center gap-5">
+          <a
+            href="https://www.youtube.com/@mfelzayat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-ui text-[11px] tracking-label text-mute uppercase transition hover:text-copper-dim"
+          >
+            YouTube
+          </a>
+          <a
+            href="https://strikemedia.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-ui text-[11px] tracking-label text-mute uppercase transition hover:text-copper-dim"
+          >
+            Strike Media
+          </a>
+          <p className="font-ui text-[11px] tracking-label text-mute uppercase">
+            © 2026 · Cairo
+          </p>
+        </div>
       </div>
     </footer>
   )

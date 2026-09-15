@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 const chapters = [
   { id: 'top', label: 'Intro', num: '01' },
-  { id: 'about', label: 'About', num: '02' },
-  { id: 'ventures', label: 'Ventures', num: '03' },
-  { id: 'focus', label: 'Focus', num: '04' },
+  { id: 'work', label: 'Work', num: '02' },
+  { id: 'about', label: 'About', num: '03' },
+  { id: 'ventures', label: 'Ventures', num: '04' },
   { id: 'contact', label: 'Contact', num: '05' },
 ]
 

@@ -4,28 +4,36 @@ const ventures = [
   {
     num: '01',
     name: 'Strike Media',
-    role: 'Founder & CEO',
+    role: 'Co-Founder & CEO',
     blurb:
-      'Media company: strategy, creative, digital execution. Public front at Strike Studio.',
-    href: 'https://strikestudio.net',
-    cta: 'strikestudio.net',
+      'Integrated marketing, film, and live production. A-list launch nights and TVCs out of Cairo.',
+    href: 'https://strikemedia.net',
+    cta: 'strikemedia.net',
   },
   {
     num: '02',
     name: 'StrikeMedia EMS',
     role: 'Event operations',
     blurb:
-      'QR invitations and event ops. The logistics layer under live production.',
+      'QR invitations, check-in, live ops. The systems layer under the nights we stage.',
     href: 'https://ems.strikemedia.net',
     cta: 'ems.strikemedia.net',
   },
   {
     num: '03',
-    name: 'Labs',
-    role: 'Side builds',
-    blurb: 'Small products and city tools. Ships when ready. No pitch deck.',
-    href: null,
-    cta: null,
+    name: 'DARAK V2',
+    role: 'Cinematic pitch',
+    blurb: 'Client pitch site — cinematic walkthrough when a deck is not enough.',
+    href: 'https://darak-v2.strikestudio.net',
+    cta: 'darak-v2.strikestudio.net',
+  },
+  {
+    num: '04',
+    name: 'Strike 3D Demo',
+    role: 'Cinematic pitch',
+    blurb: '3D / spatial demo for real-estate and experiential briefs.',
+    href: 'https://strike-3d-demo.strikestudio.net',
+    cta: 'strike-3d-demo.strikestudio.net',
   },
 ]
 
@@ -38,11 +46,15 @@ export function Ventures() {
       <div className="mx-auto max-w-[1400px]">
         <Reveal className="mb-12 max-w-2xl md:mb-16">
           <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
-            03 · Ventures
+            04 · Ventures
           </p>
           <h2 className="mt-5 font-display text-5xl text-paper md:text-6xl">
-            Companies I run
+            Company &amp; tools
           </h2>
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-mute">
+            The agency, the ops stack, and the pitch sites we ship when a PDF
+            fails the brief.
+          </p>
         </Reveal>
 
         <ul className="divide-y divide-line border-y border-line">

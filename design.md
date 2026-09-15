@@ -1,14 +1,15 @@
 ---
 version: anydesign-1
-name: Melzayat Hub (hub-v2 → hub-v3)
+name: Melzayat Hub (hub-v3 → hub-v4)
 source: https://melzayathub.com (+ /workspace/melzayathub-repo source)
 captured_at: 2026-09-15
 description: |
   Warm ink-and-paper editorial hub for a Cairo media founder. Not a SaaS product
   page and not a startup brochure. Belief: the site should feel like a studio
   ledger — type-led, copper-lit, sparse only where structure earns the silence.
-  Hub-v3 keeps the copper/paper system and replaces void + AI brochure copy with
-  a signature geometric frame and blunt operator voice.
+  Hub-v3 kept copper/paper + Hub Frame + blunt voice. Hub-v4 densifies with REAL
+  work proof (YouTube portfolio): Selected Work replaces Focus; named clients +
+  talent; Showreel 2025 featured; Labs dropped for cinematic demos.
 
 colors:
   ink: "#0c0b09"
@@ -418,3 +419,29 @@ Justification: Already matches repo; tokens live in `@theme`; motion via IO + CS
 - Labs destination URL — none today; leave unlinked until a real URL exists.
 - Whether Strike Studio vs Strike Media naming on the public CTA should prefer `strikestudio.net` (current) — keep current live links.
 - Material otherwise sufficient for reconstruction; no further capture required.
+
+---
+
+## 8. hub-v4 — Work-proof reconstruction (2026-09-15)
+
+**Why:** hub-v3 still read as a generic "Operator from Cairo" brochure. Mohamed
+rejected it. Rebuild on the real portrait: Co-Founder & CEO / Producer, Strike
+Media; YouTube `@mfelzayat` (~117 videos) is the proof.
+
+**Keep:** copper/paper tokens, Instrument Serif + Syne, HubFrame, Reveal, square
+edges, Contact polarity band, blunt Cairo voice.
+
+**Change:**
+- **Selected Work** (new `#work`) replaces Focus sectors. Featured privacy-friendly
+  embed for Strike Media Showreel 2025 (`r0xWUfp7TOg`); 11 thumbnail cards link out
+  (Restart, Wael Jassar/Moment, Nile Unforgettable Night, Golden View GEM, Capital
+  Hills × Karim Afifi, ARQA Ritz × Elwakil, Xiaomi × Tamer Hosny, Horus fire show,
+  Khaled El-Enany UNESCO, Sphinx Helwa Ya Baladi, FORTHING launch).
+- Hero: Co-Founder & CEO · Producer; CTAs Work / Contact; Arabic line طعم في زمن الـ AI.
+- About: producer/CEO hybrid; systems language; refuse/taste; EMS; Ex Professor brief.
+- Ventures: Strike Media (strikemedia.net), EMS, DARAK V2, Strike 3D Demo — drop Labs.
+- Contact: email + WhatsApp/phone + YouTube + Facebook Strike.
+- Nav / ChapterIndex / Footer / OG meta updated; Focus.tsx removed.
+
+**Voice rule:** named clients + talent above the fold / first Work scroll. No
+triads, no "passionate about", no Labs fluff, no Issue/Vol costume.

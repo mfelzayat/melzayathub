@@ -11,26 +11,34 @@ export function About() {
       <div className="relative mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-12 lg:gap-14">
         <Reveal className="lg:col-span-4">
           <p className="font-ui text-[11px] font-medium tracking-label text-copper uppercase">
-            02 · About
+            03 · About
           </p>
           <h2 className="mt-5 font-display text-5xl leading-[0.95] text-paper md:text-6xl">
-            Operator
+            Producer.
             <br />
-            from Cairo
+            CEO.
+            <br />
+            Same desk.
           </h2>
         </Reveal>
 
         <div className="space-y-6 text-lg leading-relaxed text-paper-dim md:text-xl lg:col-span-7 lg:col-start-6">
           <Reveal as="p">
-            I run Strike Media from Cairo: strategy, creative, and delivery in one
-            company. Brands hire us to ship work, not slide decks.
+            I run Strike Media from Mohandeseen / Cairo: campaigns, films, and
+            live events as engineered systems — not one-off spectacle. Brands hire
+            us when the night has to land.
           </Reveal>
           <Reveal as="p" delayMs={70}>
-            Beside the studio sits StrikeMedia EMS: QR invitations, check-in, and the
-            ops stack behind live events. Same standard. Fewer handoffs.
+            Advertising rewarded production. The next decade rewards the ability
+            to refuse. طعم في زمن الـ AI، مش كمية — taste over volume.
           </Reveal>
-          <Reveal as="p" delayMs={140} className="text-paper">
-            If a tool is missing, I build it. When the show starts, I run the floor.
+          <Reveal as="p" delayMs={140}>
+            When the ops stack is missing, I build it. That&apos;s StrikeMedia EMS:
+            invitations, check-in, the logistics layer under the show. Ex Professor
+            of ICT / e-learning (UK) — useful background, not the headline.
+          </Reveal>
+          <Reveal as="p" delayMs={200} className="text-paper">
+            Proof lives on the channel. Named clients. Named talent. No brochure.
           </Reveal>
         </div>
       </div>
