@@ -1,37 +1,41 @@
-import { motion } from 'framer-motion'
-import { Mail } from 'lucide-react'
+import { Reveal } from './Reveal'
 
 export function Contact() {
   return (
-    <section id="contact" className="scroll-mt-24 px-5 py-24 md:px-8 md:py-32">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6 }}
-        className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-crimson/25 bg-gradient-to-br from-ink-elevated via-ink-soft to-ink p-8 md:p-14"
-      >
-        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-crimson/15 blur-3xl" />
+    <section
+      id="contact"
+      className="scroll-mt-24 border-t border-line bg-paper px-5 py-24 text-ink md:px-10 md:py-32 lg:px-14"
+    >
+      <div className="mx-auto max-w-[1400px]">
+        <Reveal>
+          <p className="font-ui text-[11px] font-medium tracking-label text-copper-dim uppercase">
+            05 — Contact
+          </p>
+          <h2 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] text-ink">
+            Direct line.
+            <br />
+            No intake forms.
+          </h2>
+        </Reveal>
 
-        <p className="relative text-sm font-medium tracking-[0.2em] text-crimson uppercase">
-          Contact
-        </p>
-        <h2 className="relative mt-4 max-w-lg font-display text-4xl text-snow md:text-5xl">
-          Let&apos;s talk about what&apos;s next.
-        </h2>
-        <p className="relative mt-5 max-w-md text-lg text-mist">
-          Partnerships, ventures, and thoughtful collaborations — reach out
-          directly.
-        </p>
-
-        <a
-          href="mailto:melzayat@strikemedia.net"
-          className="relative mt-10 inline-flex items-center gap-3 rounded-full bg-crimson px-6 py-3.5 text-sm font-semibold text-snow shadow-[0_0_40px_-8px_var(--color-crimson)] transition hover:bg-crimson-dim"
-        >
-          <Mail size={18} strokeWidth={2} />
-          melzayat@strikemedia.net
-        </a>
-      </motion.div>
+        <Reveal delayMs={100} className="mt-12 md:mt-16">
+          <a
+            href="mailto:melzayat@strikemedia.net"
+            className="group inline-flex flex-col gap-3 border-b-2 border-ink pb-3 transition hover:border-copper md:flex-row md:items-end md:gap-6"
+          >
+            <span className="font-display text-[clamp(1.5rem,4vw,2.75rem)] text-ink transition group-hover:text-copper-dim">
+              melzayat@strikemedia.net
+            </span>
+            <span className="font-ui pb-1 text-[11px] font-semibold tracking-label text-mute uppercase transition group-hover:text-copper-dim">
+              Open mail ↗
+            </span>
+          </a>
+          <p className="mt-8 max-w-md text-base leading-relaxed text-mute">
+            Partnerships, platforms, and serious conversations. Write when you
+            have something worth building.
+          </p>
+        </Reveal>
+      </div>
     </section>
   )
 }

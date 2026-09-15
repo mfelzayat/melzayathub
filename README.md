@@ -1,13 +1,15 @@
 # Melzayat Hub — melzayathub.com
 
-Premium personal hub for **Mohamed El Zayat**, Founder & CEO of Strike Media (Cairo).
+Editorial personal hub for **Mohamed El Zayat**, Founder & CEO of Strike Media (Cairo).
+
+Magazine / agency-reel art direction — Instrument Serif + Syne, warm ink & paper, electric copper accent. Not a SaaS template.
 
 ## Stack
 
 - **Vite** + **React 19** + **TypeScript**
 - **Tailwind CSS v4** (`@tailwindcss/vite`)
-- **Framer Motion** (subtle scroll / entrance motion)
-- Static output suitable for **Cloudflare Pages**
+- IntersectionObserver scroll reveals (no Framer)
+- Static output for **Cloudflare Pages** / Caddy
 
 ## Scripts
 
@@ -18,7 +20,7 @@ npm run build    # production build → dist/
 npm run preview  # preview production build
 ```
 
-## Cloudflare Pages deploy
+## Deploy
 
 | Setting | Value |
 |--------|--------|
@@ -28,15 +30,8 @@ npm run preview  # preview production build
 | Root directory | `/` (repo root) |
 | Node version | 20+ recommended |
 
-### Connect the repo
-
-1. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → Connect to Git.
-2. Select `mfelzayat/melzayathub`, branch **`main`** (after merging `hub-v1`).
-3. Use the build settings above.
-4. Custom domain: attach **melzayathub.com** in Pages → Custom domains.
-
-SPA fallback is included at `public/_redirects` (`/* → /index.html` 200) for client-side routes.
+SPA fallback: `public/_redirects` (`/* → /index.html` 200).
 
 ## Archive
 
-Previous site content (`alayaa/`, `projects/`) lives under `archive/` so nothing is lost.
+Previous site content (`alayaa/`, `projects/`) lives under `archive/`.

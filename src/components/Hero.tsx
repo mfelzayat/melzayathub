@@ -1,79 +1,72 @@
-import { motion } from 'framer-motion'
-
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100dvh] flex-col justify-end px-5 pb-20 pt-32 md:justify-center md:px-8 md:pb-24 md:pt-28"
+      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden px-5 pb-16 pt-28 md:justify-center md:px-10 md:pb-24 md:pt-32 lg:px-14"
     >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-crimson/10 blur-3xl" />
-        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-crimson/5 blur-3xl" />
+      {/* Asymmetric frame marks — not blurs */}
+      <div
+        className="pointer-events-none absolute top-24 right-0 hidden h-[70%] w-px bg-line lg:block"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute top-28 right-8 hidden font-ui text-[10px] tracking-label text-mute uppercase lg:block"
+        aria-hidden
+      >
+        Issue / Hub
+        <br />
+        Vol. 2026
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-5 text-sm font-medium tracking-[0.2em] text-crimson uppercase"
-        >
-          Cairo · Strike Media
-        </motion.p>
+      <div className="relative mx-auto grid w-full max-w-[1400px] gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+        <div className="lg:col-span-8">
+          <p className="mb-8 font-ui text-[11px] font-medium tracking-label text-copper uppercase">
+            Cairo · Strike Media
+          </p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-[clamp(2.75rem,10vw,6.5rem)] leading-[0.95] font-medium tracking-tight text-snow text-balance"
-        >
-          Mohamed
-          <br />
-          El Zayat
-        </motion.h1>
+          <h1 className="font-display text-[clamp(3.4rem,12vw,8.5rem)] leading-[0.88] tracking-[-0.02em] text-paper">
+            Mohamed
+            <br />
+            <span className="text-paper-dim">El Zayat</span>
+          </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-xl text-lg text-mist md:text-xl"
-        >
-          Founder &amp; CEO, Strike Media.
-          <br />
-          Building media, platforms, and ventures across the region.
-        </motion.p>
+          <div className="mt-10 flex max-w-2xl flex-col gap-6 md:mt-12 md:flex-row md:items-start md:gap-10">
+            <div className="hidden h-16 w-px shrink-0 bg-copper md:block" aria-hidden />
+            <p className="font-display text-2xl leading-snug text-paper md:text-[1.85rem]">
+              I build media companies and the systems underneath them.
+            </p>
+          </div>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
-          className="mt-4 font-display text-xl italic text-fog md:text-2xl"
-          lang="ar"
-          dir="rtl"
-        >
-          بناء ما يستحق أن يدوم
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-10 flex flex-wrap gap-4"
-        >
-          <a
-            href="#ventures"
-            className="rounded-full bg-crimson px-6 py-3 text-sm font-semibold text-snow shadow-[0_0_40px_-8px_var(--color-crimson)] transition hover:bg-crimson-dim"
+        <div className="flex flex-col justify-end gap-8 lg:col-span-4 lg:items-end lg:pb-3">
+          <p
+            className="font-display text-right text-xl italic text-mute md:text-2xl lg:max-w-[14ch]"
+            lang="ar"
+            dir="rtl"
           >
-            Explore ventures
-          </a>
-          <a
-            href="#contact"
-            className="rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-snow backdrop-blur transition hover:border-white/30 hover:bg-white/10"
-          >
-            Contact
-          </a>
-        </motion.div>
+            بناء ما يستحق أن يدوم
+          </p>
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <a
+              href="#ventures"
+              className="font-ui border border-paper/20 bg-paper px-5 py-3 text-[11px] font-semibold tracking-label text-ink uppercase transition hover:bg-copper hover:border-copper"
+            >
+              Ventures
+            </a>
+            <a
+              href="#contact"
+              className="font-ui border border-paper/25 px-5 py-3 text-[11px] font-semibold tracking-label text-paper uppercase transition hover:border-copper hover:text-copper"
+            >
+              Contact
+            </a>
+          </div>
+          <p className="font-ui text-[10px] tracking-label text-mute uppercase lg:text-right">
+            Founder &amp; CEO
+          </p>
+        </div>
       </div>
+
+      <div className="absolute inset-x-5 bottom-0 rule md:inset-x-10 lg:inset-x-14" />
     </section>
   )
 }

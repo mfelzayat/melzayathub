@@ -1,4 +1,5 @@
 import { Nav } from './components/Nav'
+import { ChapterIndex } from './components/ChapterIndex'
 import { Hero } from './components/Hero'
 import { About } from './components/About'
 import { Ventures } from './components/Ventures'
@@ -10,6 +11,7 @@ export default function App() {
   return (
     <div className="grain relative min-h-dvh">
       <Nav />
+      <ChapterIndex />
       <main>
         <Hero />
         <About />
