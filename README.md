@@ -1,16 +1,17 @@
 # Melzayat Hub — melzayathub.com
 
-Personal hub for **Mohamed El Zayat**, Founder & CEO of Strike Media (Cairo).
+Personal hub for **Mohamed El Zayat**, Co-Founder & CEO of Strike Media · Producer (Cairo).
 
-Copper/paper editorial system, Instrument Serif + Syne, custom Hub Frame SVG. Blunt operator copy — not a SaaS template.
+Copper/paper editorial system, Instrument Serif + Syne, custom Hub Frame SVG. Work-proof layout: Selected Work from the YouTube archive, blunt producer-CEO copy — not a SaaS template.
 
-See `design.md` for the design diagnosis and reconstruction notes (hub-v3).
+See `design.md` for design diagnosis and hub-v4 work-proof notes.
 
 ## Stack
 
 - **Vite** + **React 19** + **TypeScript**
 - **Tailwind CSS v4** (`@tailwindcss/vite`)
 - IntersectionObserver scroll reveals (no Framer)
+- YouTube: one privacy-friendly showreel embed + thumbnail cards
 - Static output for **Cloudflare Pages** / Caddy
 
 ## Scripts

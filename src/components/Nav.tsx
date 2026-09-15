@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Monogram } from './Monogram'
 
 const links = [
+  { href: '#work', label: 'Work' },
   { href: '#about', label: 'About' },
   { href: '#ventures', label: 'Ventures' },
-  { href: '#focus', label: 'Focus' },
   { href: '#contact', label: 'Contact' },
 ]
 

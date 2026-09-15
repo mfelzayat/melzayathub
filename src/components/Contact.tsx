@@ -1,5 +1,28 @@
 import { Reveal } from './Reveal'
 
+const links = [
+  {
+    label: 'Email',
+    href: 'mailto:melzayat@strikemedia.net',
+    value: 'melzayat@strikemedia.net',
+  },
+  {
+    label: 'WhatsApp',
+    href: 'https://wa.me/201013609999',
+    value: '+20 101 360 9999',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@mfelzayat',
+    value: '@mfelzayat',
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/StrikeMediaAgency',
+    value: 'Strike Media Agency',
+  },
+]
+
 export function Contact() {
   return (
     <section
@@ -19,19 +42,27 @@ export function Contact() {
         </Reveal>
 
         <Reveal delayMs={90} className="mt-10 md:mt-14">
-          <a
-            href="mailto:melzayat@strikemedia.net"
-            className="group inline-flex flex-col gap-3 border-b-2 border-ink pb-3 transition hover:border-copper md:flex-row md:items-end md:gap-6"
-          >
-            <span className="font-display text-[clamp(1.5rem,4vw,2.75rem)] text-ink transition group-hover:text-copper-dim">
-              melzayat@strikemedia.net
-            </span>
-            <span className="font-ui pb-1 text-[11px] font-semibold tracking-label text-mute uppercase transition group-hover:text-copper-dim">
-              Open mail ↗
-            </span>
-          </a>
-          <p className="mt-7 max-w-md text-base leading-relaxed text-mute">
-            Email me for work, partnerships, or platforms. Keep it concrete.
+          <ul className="divide-y divide-ink/10 border-y border-ink/10">
+            {links.map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target={l.href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={l.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                  className="group flex flex-col gap-1 py-5 transition sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+                >
+                  <span className="font-ui text-[10px] tracking-label text-mute uppercase">
+                    {l.label}
+                  </span>
+                  <span className="font-display text-xl text-ink transition group-hover:text-copper-dim md:text-2xl">
+                    {l.value} <span className="text-base text-mute group-hover:text-copper-dim">↗</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 max-w-md text-base leading-relaxed text-mute">
+            Work, partnerships, production briefs. Keep it concrete.
           </p>
         </Reveal>
       </div>
